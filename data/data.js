@@ -38,7 +38,21 @@ export const Starlight = [
       [5, 1],
     ],
   },
-  {name: 'Gemini', id: 's3', position: []},
+  {
+    name: 'Gemini',
+    id: 's3',
+    position: [
+      {id: 1, xFactor: -0.4, yFactor: -1.4}, // Top left
+      {id: 2, xFactor: -0.2, yFactor: -1.2}, // Top right
+      {id: 3, xFactor: -0.1, yFactor: -0.8}, // Middle left
+      {id: 4, xFactor: 0.3, yFactor: -0.9}, // Middle right
+      {id: 5, xFactor: 0.6, yFactor: -1.5}, // Bottom left
+      {id: 6, xFactor: 0.7, yFactor: -0.1}, // Bottom right
+      {id: 7, xFactor: -0.6, yFactor: -0.6}, // Extended top left
+      {id: 8, xFactor: -0.8, yFactor: -0.4},
+      {id: 9, xFactor: -0.6, yFactor: 0.2},
+    ],
+  },
   {
     name: 'Libra',
     id: 's4',
