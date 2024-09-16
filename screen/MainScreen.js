@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,10 +9,10 @@ import {
   ImageBackground,
 } from 'react-native';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
 const GAME_AREA_HEIGHT = height * 0.7;
-const STAR_SIZE = 12; // Define star size here for easy reference
+const STAR_SIZE = 16; // Increased by 30% from 12
 
 const MainScreen = () => {
   const [stars, setStars] = useState([]);
@@ -27,58 +27,30 @@ const MainScreen = () => {
   const initializeStars = () => {
     const centerX = GAME_AREA_WIDTH * 0.5;
     const centerY = GAME_AREA_HEIGHT * 0.5;
-    const scaleY = Math.min(GAME_AREA_WIDTH, GAME_AREA_HEIGHT) * 0.4;
+    const scaleY = Math.min(GAME_AREA_WIDTH, GAME_AREA_HEIGHT) * 0.4; // Slightly reduced scale
     const scaleX = scaleY * 1.2; // Make the constellation 20% wider
 
+    const constrainPosition = (x, y) => ({
+      left: Math.max(STAR_SIZE/2, Math.min(x, GAME_AREA_WIDTH - STAR_SIZE/2)),
+      top: Math.max(STAR_SIZE/2, Math.min(y, GAME_AREA_HEIGHT - STAR_SIZE/2))
+    });
+
     const ursaMajorStars = [
-      {
-        id: 1,
-        top: centerY - scaleY * 0.3,
-        left: centerX - scaleX * 0.3,
-        isConstellation: true,
-      },
-      {
-        id: 2,
-        top: centerY - scaleY * 0.1,
-        left: centerX - scaleX * 0.1,
-        isConstellation: true,
-      },
-      {
-        id: 3,
-        top: centerY + scaleY * 0.1,
-        left: centerX + scaleX * 0.1,
-        isConstellation: true,
-      },
-      {
-        id: 4,
-        top: centerY + scaleY * 0.3,
-        left: centerX + scaleX * 0.3,
-        isConstellation: true,
-      },
-      {
-        id: 5,
-        top: centerY + scaleY * 0.2,
-        left: centerX + scaleX * 0.5,
-        isConstellation: true,
-      },
-      {
-        id: 6,
-        top: centerY,
-        left: centerX + scaleX * 0.6,
-        isConstellation: true,
-      },
-      {
-        id: 7,
-        top: centerY - scaleY * 0.2,
-        left: centerX + scaleX * 0.7,
-        isConstellation: true,
-      },
+      { id: 1, ...constrainPosition(centerX - scaleX * 0.3, centerY - scaleY * 0.3), isConstellation: true },
+      { id: 2, ...constrainPosition(centerX - scaleX * 0.1, centerY - scaleY * 0.1), isConstellation: true },
+      { id: 3, ...constrainPosition(centerX + scaleX * 0.1, centerY + scaleY * 0.1), isConstellation: true },
+      { id: 4, ...constrainPosition(centerX + scaleX * 0.3, centerY + scaleY * 0.3), isConstellation: true },
+      { id: 5, ...constrainPosition(centerX + scaleX * 0.5, centerY + scaleY * 0.2), isConstellation: true },
+      { id: 6, ...constrainPosition(centerX + scaleX * 0.6, centerY), isConstellation: true },
+      { id: 7, ...constrainPosition(centerX + scaleX * 0.7, centerY - scaleY * 0.2), isConstellation: true },
     ];
 
-    const randomStars = Array.from({length: 30}, (_, i) => ({
+    const randomStars = Array.from({ length: 13 }, (_, i) => ({
       id: i + 8,
-      top: Math.random() * GAME_AREA_HEIGHT,
-      left: Math.random() * GAME_AREA_WIDTH,
+      ...constrainPosition(
+        Math.random() * GAME_AREA_WIDTH,
+        Math.random() * GAME_AREA_HEIGHT
+      ),
       isConstellation: false,
     }));
 
@@ -89,7 +61,7 @@ const MainScreen = () => {
     if (!selectedStar) {
       setSelectedStar(star);
     } else if (selectedStar.id !== star.id) {
-      setLines([...lines, {start: selectedStar, end: star}]);
+      setLines([...lines, { start: selectedStar, end: star }]);
       setSelectedStar(null);
     }
   };
@@ -140,7 +112,7 @@ const MainScreen = () => {
         <View
           style={[
             styles.gameArea,
-            {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
+            { width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT },
           ]}>
           {lines.map((line, index) => {
             const startX = line.start.left + STAR_SIZE / 2;
@@ -170,7 +142,7 @@ const MainScreen = () => {
               key={star.id}
               style={[
                 styles.star,
-                {top: star.top, left: star.left},
+                { top: star.top, left: star.left },
                 star.isConstellation
                   ? styles.constellationStar
                   : styles.randomStar,
@@ -202,7 +174,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    // justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 50,
     justifyContent: 'space-between',
@@ -213,7 +185,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginBottom: 20,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
   },
   gameArea: {
@@ -232,7 +204,7 @@ const styles = StyleSheet.create({
   constellationStar: {
     backgroundColor: '#ffd700',
     shadowColor: '#ffd700',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 4,
     elevation: 5,
@@ -247,7 +219,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     transformOrigin: 'left',
     shadowColor: '#ffd700',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 4,
     elevation: 5,
@@ -258,14 +230,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginTop: 20,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
+    textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    // marginTop: 20,
+    marginTop: 20,
     gap: 10,
     paddingBottom: 50,
   },
