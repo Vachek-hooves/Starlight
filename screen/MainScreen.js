@@ -5,7 +5,7 @@ import { Starlight } from '../data/data';
 const { width, height } = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
 const GAME_AREA_HEIGHT = height * 0.7;
-const STAR_SIZE = 16;
+const STAR_SIZE = 22;
 
 const MainScreen = ({ route, navigation }) => {
   const { constellationId } = route.params;
@@ -191,7 +191,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   constellationStar: {
-    backgroundColor: '#ffd700',
+    // backgroundColor: '#ffd700',
+    backgroundColor: '#ffffff',
     shadowColor: '#ffd700',
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.8,
@@ -200,10 +201,15 @@ const styles = StyleSheet.create({
   },
   randomStar: {
     backgroundColor: '#ffffff',
+    shadowColor: '#ffd700',
     opacity: 0.7,
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   line: {
-    height: 2,
+    height: 3,
     backgroundColor: 'rgba(255, 215, 0, 0.6)',
     position: 'absolute',
     transformOrigin: 'left',
