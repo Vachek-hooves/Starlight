@@ -40,7 +40,7 @@ const MainScreen = ({ route, navigation }) => {
       isConstellation: true,
     }));
 
-    const randomStars = Array.from({ length: 8 }, (_, i) => ({
+    const randomStars = Array.from({ length: 2 }, (_, i) => ({
       id: i + constellationStars.length + 1,
       ...constrainPosition(
         Math.random() * GAME_AREA_WIDTH,
@@ -65,12 +65,17 @@ const MainScreen = ({ route, navigation }) => {
     const playerConnections = lines.map(line => 
       [line.start.id, line.end.id].sort((a, b) => a - b)
     );
-
+    console.log("Player connections:", playerConnections);
+    console.log("Correct connections:", constellation.connections);
+  
     const isCorrect = constellation.connections.every(conn => 
       playerConnections.some(playerConn => 
         playerConn[0] === conn[0] && playerConn[1] === conn[1]
       )
     ) && playerConnections.length === constellation.connections.length;
+  
+    console.log("Is correct:", isCorrect);
+  
 
     if (isCorrect) {
       alert(`Congratulations! You've correctly placed the ${constellation.name} constellation!`);
