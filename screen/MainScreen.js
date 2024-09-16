@@ -88,7 +88,7 @@ const MainScreen = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ImageBackground
         source={require('../assets/img/bg/skybg.jpg')} // Adjust the path as needed
         style={styles.background}>
@@ -147,7 +147,7 @@ const MainScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </SafeAreaView>
+    </View>
   );
 };
 
