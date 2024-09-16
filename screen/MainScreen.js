@@ -11,7 +11,8 @@ import {
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
-const GAME_AREA_HEIGHT = height * 0.5;
+const GAME_AREA_HEIGHT = height * 0.7;
+const STAR_SIZE = 12; // Define star size here for easy reference
 
 const MainScreen = () => {
   const [stars, setStars] = useState([]);
@@ -131,59 +132,54 @@ const MainScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ImageBackground
-        // source={require('./assets/night-sky.jpg')} // Make sure to add this image to your assets
-        source={require('../assets/img/bg/skybg.jpg')}
+        source={require('../assets/img/bg/skybg.jpg')} // Adjust the path as needed
         style={styles.background}>
-        <View>
-          <Text style={styles.title}>Constellation Game: Ursa Major</Text>
-          <View
-            style={[
-              styles.gameArea,
-              {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
-            ]}>
-            {lines.map((line, index) => (
+        <Text style={styles.title}>Constellation Game: Ursa Major</Text>
+        <View
+          style={[
+            styles.gameArea,
+            {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
+          ]}>
+          {lines.map((line, index) => {
+            const startX = line.start.left + STAR_SIZE / 2;
+            const startY = line.start.top + STAR_SIZE / 2;
+            const endX = line.end.left + STAR_SIZE / 2;
+            const endY = line.end.top + STAR_SIZE / 2;
+            const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            const angle = Math.atan2(endY - startY, endX - startX);
+
+            return (
               <View
                 key={index}
                 style={[
                   styles.line,
                   {
-                    left: line.start.left,
-                    top: line.start.top,
-                    width: Math.sqrt(
-                      Math.pow(line.end.left - line.start.left, 2) +
-                        Math.pow(line.end.top - line.start.top, 2),
-                    ),
-                    transform: [
-                      {
-                        rotate: `${Math.atan2(
-                          line.end.top - line.start.top,
-                          line.end.left - line.start.left,
-                        )}rad`,
-                      },
-                    ],
-                  },
+                    left: startX,
+                    top: startY,
+                    width: length,
+                    transform: [{ rotate: `${angle}rad` }]
+                  }
                 ]}
               />
-            ))}
-            {stars.map(star => (
-              <TouchableOpacity
-                key={star.id}
-                style={[
-                  styles.star,
-                  {top: star.top, left: star.left},
-                  star.isConstellation
-                    ? styles.constellationStar
-                    : styles.randomStar,
-                ]}
-                onPress={() => handleStarPress(star)}
-              />
-            ))}
-          </View>
+            );
+          })}
+          {stars.map(star => (
+            <TouchableOpacity
+              key={star.id}
+              style={[
+                styles.star,
+                {top: star.top, left: star.left},
+                star.isConstellation
+                  ? styles.constellationStar
+                  : styles.randomStar,
+              ]}
+              onPress={() => handleStarPress(star)}
+            />
+          ))}
         </View>
         <Text style={styles.score}>Score: {score}</Text>
-        {/* <View style={{paddingBottom: 60}}> */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={checkWin}>
             <Text style={styles.buttonText}>Check Solution</Text>
@@ -194,9 +190,8 @@ const MainScreen = () => {
             <Text style={styles.buttonText}>Reset</Text>
           </TouchableOpacity>
         </View>
-        {/* </View> */}
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -229,9 +224,9 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   star: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: STAR_SIZE,
+    height: STAR_SIZE,
+    borderRadius: STAR_SIZE / 2,
     position: 'absolute',
   },
   constellationStar: {
