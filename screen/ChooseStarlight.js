@@ -18,18 +18,21 @@ const ChooseStarlight = ({navigation}) => {
   return (
     <MainLayout>
       <SafeAreaView
-        style={{justifyContent: 'center', flex: 1, alignItems: 'center'}}>
-        <TouchableOpacity onPress={navigateTo}>
-          <Text>Open Starlight</Text>
-        </TouchableOpacity>
-        <ScrollView>
+        style={{
+          //   justifyContent: 'center',
+          flex: 1,
+          //   alignItems: 'center',
+        }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{width: '100%', alignItems: 'center'}}>
           {Starlight.map((star, i) => {
             return (
               <TouchableOpacity
                 onPress={() => navigateTo(star.id)}
                 key={i}
-                style={{padding: 20, borderWidth: 2, marginVertical: 10}}>
-                <Text>{star.name}</Text>
+                style={styles.button}>
+                <Text style={styles.text}>{star.name}</Text>
               </TouchableOpacity>
             );
           })}
@@ -41,4 +44,21 @@ const ChooseStarlight = ({navigation}) => {
 
 export default ChooseStarlight;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  button: {
+    padding: 20,
+    borderWidth: 2,
+    marginVertical: 25,
+    borderRadius: 15,
+    width: '90%',
+    alignItems: 'center',
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  text: {
+    fontSize: 22,
+    letterSpacing: 2,
+    color: '#fff',
+    fontWeight: '900',
+  },
+});
