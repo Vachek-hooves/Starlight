@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-const GAME_AREA_SIZE = Math.min(width, height) * 0.8;
+const GAME_AREA_SIZE = Math.min(width, height) * 0.9;
 
 const MainScreen = () => {
   const [stars, setStars] = useState([]);
