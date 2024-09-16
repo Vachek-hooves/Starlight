@@ -67,6 +67,12 @@ const MainScreen = () => {
     }
   };
 
+  const resetGame = () => {
+    setLines([]);
+    setSelectedStar(null);
+    setScore(100);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Constellation Game: Ursa Major</Text>
@@ -106,9 +112,14 @@ const MainScreen = () => {
         ))}
       </View>
       <Text style={styles.score}>Score: {score}</Text>
-      <TouchableOpacity style={styles.button} onPress={checkWin}>
-        <Text style={styles.buttonText}>Check Solution</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={checkWin}>
+          <Text style={styles.buttonText}>Check Solution</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.resetButton]} onPress={resetGame}>
+          <Text style={styles.buttonText}>Reset</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -154,15 +165,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '60%',
+    marginTop: 20,
+  },
   button: {
     backgroundColor: 'blue',
     padding: 10,
     borderRadius: 5,
-    marginTop: 20,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  resetButton: {
+    backgroundColor: 'red',
   },
   buttonText: {
     color: 'white',
     fontSize: 16,
+    textAlign: 'center',
   },
 });
 
