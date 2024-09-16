@@ -3,7 +3,13 @@ import React from 'react';
 
 const MainScreen = () => {
   return (
-    <View style={{flex: 1, backgroundColor: 'rgba(100, 100, 100, 1)'}}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: 'rgba(100, 100, 100, 1)',
+        paddingTop: 40,
+        paddingHorizontal: 5,
+      }}>
       <Text>MainScreen</Text>
     </View>
   );
