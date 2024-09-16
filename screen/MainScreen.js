@@ -14,7 +14,8 @@ const GAME_AREA_WIDTH = width * 0.9;
 const GAME_AREA_HEIGHT = height * 0.7;
 const STAR_SIZE = 16; // Increased by 30% from 12
 
-const MainScreen = () => {
+const MainScreen = ({constellationId}) => {
+  console.log(constellationId);
   const [stars, setStars] = useState([]);
   const [lines, setLines] = useState([]);
   const [selectedStar, setSelectedStar] = useState(null);
