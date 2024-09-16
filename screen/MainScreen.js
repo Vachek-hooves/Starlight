@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   constellationStar: {
-    backgroundColor: 'darkblue',
+    backgroundColor: 'lightblue',
   },
   randomStar: {
     backgroundColor: 'lightblue',
