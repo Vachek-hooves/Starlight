@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-const GAME_AREA_SIZE = Math.min(width, height) * 0.9;
+const GAME_AREA_SIZE = Math.min(width, height) * 0.8;
 
 const MainScreen = () => {
   const [stars, setStars] = useState([]);
@@ -57,10 +57,10 @@ const MainScreen = () => {
       playerConnections.some(playerConn => 
         playerConn[0] === conn[0] && playerConn[1] === conn[1]
       )
-    );
+    ) && playerConnections.length === correctConnections.length;
 
     if (isCorrect) {
-      alert('Congratulations! Youve correctly placed the Ursa Major constellation!');
+      alert('Congratulations! You\'ve correctly placed the Ursa Major constellation!');
     } else {
       alert('Not quite right. Try again!');
       setScore(Math.max(0, score - 10));
