@@ -57,10 +57,10 @@ const MainScreen = () => {
       playerConnections.some(playerConn => 
         playerConn[0] === conn[0] && playerConn[1] === conn[1]
       )
-    );
+    ) && playerConnections.length === correctConnections.length;
 
     if (isCorrect) {
-      alert('Congratulations! Youve correctly placed the Ursa Major constellation!');
+      alert('Congratulations! You\'ve correctly placed the Ursa Major constellation!');
     } else {
       alert('Not quite right. Try again!');
       setScore(Math.max(0, score - 10));
