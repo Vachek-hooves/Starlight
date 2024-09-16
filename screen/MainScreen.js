@@ -31,7 +31,7 @@ const MainScreen = () => {
       { id: 7, top: centerY - scaleY * 0.2, left: centerX + scaleX * 0.7, isConstellation: true },
     ];
 
-    const randomStars = Array.from({ length: 15 }, (_, i) => ({
+    const randomStars = Array.from({ length: 30 }, (_, i) => ({
       id: i + 8,
       top: Math.random() * GAME_AREA_HEIGHT,
       left: Math.random() * GAME_AREA_WIDTH,
