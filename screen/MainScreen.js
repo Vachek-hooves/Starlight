@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-const GAME_AREA_SIZE = Math.min(width, height) * 0.8;
 
 const MainScreen = () => {
   const [stars, setStars] = useState([]);
@@ -16,19 +15,19 @@ const MainScreen = () => {
 
   const initializeStars = () => {
     const ursaMajorStars = [
-      { id: 1, top: 50, left: 50, isConstellation: true },
-      { id: 2, top: 70, left: 80, isConstellation: true },
-      { id: 3, top: 100, left: 110, isConstellation: true },
-      { id: 4, top: 130, left: 140, isConstellation: true },
-      { id: 5, top: 120, left: 180, isConstellation: true },
-      { id: 6, top: 90, left: 200, isConstellation: true },
-      { id: 7, top: 60, left: 220, isConstellation: true },
+      { id: 1, top: '10%', left: '20%', isConstellation: true },
+      { id: 2, top: '15%', left: '30%', isConstellation: true },
+      { id: 3, top: '25%', left: '40%', isConstellation: true },
+      { id: 4, top: '35%', left: '50%', isConstellation: true },
+      { id: 5, top: '30%', left: '60%', isConstellation: true },
+      { id: 6, top: '20%', left: '70%', isConstellation: true },
+      { id: 7, top: '15%', left: '80%', isConstellation: true },
     ];
 
     const randomStars = Array.from({ length: 8 }, (_, i) => ({
       id: i + 8,
-      top: Math.random() * (GAME_AREA_SIZE - 20),
-      left: Math.random() * (GAME_AREA_SIZE - 20),
+      top: `${Math.random() * 70 + 10}%`,
+      left: `${Math.random() * 80 + 10}%`,
       isConstellation: false,
     }));
 
@@ -74,9 +73,9 @@ const MainScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Constellation Game: Ursa Major</Text>
-      <View style={[styles.gameArea, { width: GAME_AREA_SIZE, height: GAME_AREA_SIZE }]}>
+      <View style={styles.gameArea}>
         {lines.map((line, index) => (
           <View
             key={index}
@@ -86,13 +85,13 @@ const MainScreen = () => {
                 left: line.start.left,
                 top: line.start.top,
                 width: Math.sqrt(
-                  Math.pow(line.end.left - line.start.left, 2) +
-                  Math.pow(line.end.top - line.start.top, 2)
-                ),
+                  Math.pow(parseFloat(line.end.left) - parseFloat(line.start.left), 2) +
+                  Math.pow(parseFloat(line.end.top) - parseFloat(line.start.top), 2)
+                ) * width,
                 transform: [{
                   rotate: `${Math.atan2(
-                    line.end.top - line.start.top,
-                    line.end.left - line.start.left
+                    parseFloat(line.end.top) - parseFloat(line.start.top),
+                    parseFloat(line.end.left) - parseFloat(line.start.left)
                   )}rad`
                 }]
               }
@@ -111,79 +110,86 @@ const MainScreen = () => {
           />
         ))}
       </View>
-      <Text style={styles.score}>Score: {score}</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={checkWin}>
-          <Text style={styles.buttonText}>Check Solution</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.resetButton]} onPress={resetGame}>
-          <Text style={styles.buttonText}>Reset</Text>
-        </TouchableOpacity>
+      <View style={styles.infoContainer}>
+        <Text style={styles.score}>Score: {score}</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={checkWin}>
+            <Text style={styles.buttonText}>Check Solution</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.resetButton]} onPress={resetGame}>
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F0F0',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#1a1a2e',
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#e94560',
+    textAlign: 'center',
+    marginVertical: 20,
   },
   gameArea: {
+    width: '100%',
+    height: '80%',
+    backgroundColor: '#16213e',
     position: 'relative',
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: '#DDD',
   },
   star: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     position: 'absolute',
   },
   constellationStar: {
-    backgroundColor: 'lightblue',
+    backgroundColor: '#e94560',
   },
   randomStar: {
-    backgroundColor: 'lightblue',
+    backgroundColor: '#0f3460',
   },
   line: {
     height: 2,
-    backgroundColor: 'blue',
+    backgroundColor: '#e94560',
     position: 'absolute',
     transformOrigin: 'left',
   },
+  infoContainer: {
+    padding: 20,
+    backgroundColor: '#0f3460',
+  },
   score: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 10,
+    color: '#e94560',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '60%',
-    marginTop: 20,
   },
   button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#e94560',
+    padding: 15,
+    borderRadius: 10,
     flex: 1,
     marginHorizontal: 5,
   },
   resetButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#533483',
   },
   buttonText: {
-    color: 'white',
+    color: '#ffffff',
     fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });
