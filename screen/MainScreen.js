@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-const GAME_AREA_SIZE = Math.min(width, height) * 0.8;
+const GAME_AREA_WIDTH = width * 0.9;
+const GAME_AREA_HEIGHT = height * 0.7;
 
 const MainScreen = () => {
   const [stars, setStars] = useState([]);
@@ -15,20 +16,25 @@ const MainScreen = () => {
   }, []);
 
   const initializeStars = () => {
+    const centerX = GAME_AREA_WIDTH * 0.5;
+    const centerY = GAME_AREA_HEIGHT * 0.5;
+    const scaleY = Math.min(GAME_AREA_WIDTH, GAME_AREA_HEIGHT) * 0.4;
+    const scaleX = scaleY * 1.2; // Make the constellation 20% wider
+
     const ursaMajorStars = [
-      { id: 1, top: 50, left: 50, isConstellation: true },
-      { id: 2, top: 70, left: 80, isConstellation: true },
-      { id: 3, top: 100, left: 110, isConstellation: true },
-      { id: 4, top: 130, left: 140, isConstellation: true },
-      { id: 5, top: 120, left: 180, isConstellation: true },
-      { id: 6, top: 90, left: 200, isConstellation: true },
-      { id: 7, top: 60, left: 220, isConstellation: true },
+      { id: 1, top: centerY - scaleY * 0.3, left: centerX - scaleX * 0.3, isConstellation: true },
+      { id: 2, top: centerY - scaleY * 0.1, left: centerX - scaleX * 0.1, isConstellation: true },
+      { id: 3, top: centerY + scaleY * 0.1, left: centerX + scaleX * 0.1, isConstellation: true },
+      { id: 4, top: centerY + scaleY * 0.3, left: centerX + scaleX * 0.3, isConstellation: true },
+      { id: 5, top: centerY + scaleY * 0.2, left: centerX + scaleX * 0.5, isConstellation: true },
+      { id: 6, top: centerY, left: centerX + scaleX * 0.6, isConstellation: true },
+      { id: 7, top: centerY - scaleY * 0.2, left: centerX + scaleX * 0.7, isConstellation: true },
     ];
 
-    const randomStars = Array.from({ length: 8 }, (_, i) => ({
+    const randomStars = Array.from({ length: 15 }, (_, i) => ({
       id: i + 8,
-      top: Math.random() * (GAME_AREA_SIZE - 20),
-      left: Math.random() * (GAME_AREA_SIZE - 20),
+      top: Math.random() * GAME_AREA_HEIGHT,
+      left: Math.random() * GAME_AREA_WIDTH,
       isConstellation: false,
     }));
 
@@ -76,7 +82,7 @@ const MainScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Constellation Game: Ursa Major</Text>
-      <View style={[styles.gameArea, { width: GAME_AREA_SIZE, height: GAME_AREA_SIZE }]}>
+      <View style={[styles.gameArea, { width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT }]}>
         {lines.map((line, index) => (
           <View
             key={index}
