@@ -144,7 +144,35 @@ export const Starlight = [
       [3, 5],
     ],
   },
-  {name: 'Lion', id: 's8', position: []},
+  {
+    name: 'Lion',
+    id: 's8',
+    position: [
+      {id: 1, xFactor: 0.6, yFactor: -1},
+      {id: 2, xFactor: 0.4, yFactor: -1.2},
+      {id: 3, xFactor: 0.1, yFactor: -0.8},
+      {id: 4, xFactor: 0.15, yFactor: -0.5},
+      {id: 5, xFactor: 0.4, yFactor: -0.2},
+      {id: 6, xFactor: 0.5, yFactor: 0.2},
+      {id: 7, xFactor: -0.4, yFactor: 0.25},
+      {id: 8, xFactor: -0.8, yFactor: 0.35},
+      {id: 9, xFactor: -0.5, yFactor: -0.15},
+      
+    ],
+    connections: [
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [4, 9],
+      [5, 6],
+      [6, 7],
+      [7, 8],
+      [8, 9],
+      // [9, 4],
+
+    ],
+  },
   {name: 'Orion', id: 's9', position: []},
   {name: 'Pisces', id: 's10', position: []},
 ];
