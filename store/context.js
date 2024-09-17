@@ -57,7 +57,7 @@ export const AppProvider = ({children}) => {
   };
 
   const getUnlockCost = () => {
-    return 60 + (unlockedCount - 1) * 40;
+    return 60 + (unlockedCount - 1) * 50;
   };
 
   const unlockConstellation = async (id) => {
