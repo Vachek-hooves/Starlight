@@ -188,6 +188,7 @@ const MainScreen = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        {/* <View style={{height: 30}}></View> */}
         <IconReturn />
       </ImageBackground>
     </View>
