@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,8 +12,16 @@ import {MainLayout} from '../components/layout';
 import {useAppContext} from '../store/context';
 import {IconReset} from '../components/icon';
 
+
 const ChooseStarlight = ({navigation}) => {
-  const {starlightData, unlockConstellation, totalScore, getUnlockCost, resetGame} = useAppContext();
+  const {
+    starlightData,
+    unlockConstellation,
+    totalScore,
+    getUnlockCost,
+    resetGame,
+  } = useAppContext();
+
 
   function navigateTo(id) {
     console.log(id);

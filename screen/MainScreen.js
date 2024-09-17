@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useAppContext} from '../store/context';
 import {IconReturn} from '../components/icon';
+import { ShootingStar } from '../components/ui';
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
@@ -26,6 +27,7 @@ const MainScreen = ({route, navigation}) => {
   const [selectedStar, setSelectedStar] = useState(null);
   const [score, setScore] = useState(100);
   const [constellation, setConstellation] = useState(null);
+  const [showShootingStar, setShowShootingStar] = useState(false);
 
   useEffect(() => {
     const selectedConstellation = starlightData.find(
@@ -102,17 +104,22 @@ const MainScreen = ({route, navigation}) => {
 
     if (isCorrect) {
       updateScore(constellation.id, score);
-      Alert.alert(
-        `Congratulations! You've correctly placed the ${constellation.name} constellation!`,[
-          {
-            text: 'OK',
-            onPress: () => {
-              console.log('Navigating to ChooseStarlight');
-              navigation.navigate('ChooseStarlight');
+      setShowShootingStar(true);
+      setTimeout(() => {
+        Alert.alert(
+          'Congratulations!',
+          `You've correctly traced the ${constellation.name} constellation!`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('Navigating to ChooseStarlight');
+                navigation.navigate('ChooseStarlight');
+              }
             }
-          }
-        ]
-      );
+          ]
+        );
+      }, 1500);
     } else {
       if (score === 0) {
         gameOver();
@@ -124,13 +131,7 @@ const MainScreen = ({route, navigation}) => {
   };
   const gameOver = () => {
     Alert.alert('Game Over', 'You lose! Your score has reached 0.', [
-      {
-        text: 'OK',
-        onPress: () => {
-          console.log('Game Over: Navigating to ChooseStarlight');
-          navigation.navigate('ChooseStarlight');
-        }
-      },
+      {text: 'OK', onPress: () => navigation.navigate('ChooseStarlight')},
     ]);
   };
 
@@ -207,6 +208,9 @@ const MainScreen = ({route, navigation}) => {
           </View>
         </ScrollView>
         {/* <View style={{height: 30}}></View> */}
+        {showShootingStar && (
+          <ShootingStar onAnimationEnd={() => setShowShootingStar(false)} />
+        )}
         <IconReturn />
       </ImageBackground>
     </View>
