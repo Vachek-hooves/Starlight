@@ -1,5 +1,8 @@
 export const Starlight = [
-  {score:'0',
+  {
+    instructions:
+      'The Big Dipper consists of seven bright stars that form a characteristic shape that resembles a mug or a bucket. This constellation is very useful for astronomical navigation, as the two stars that form the back of the Big Dipper point to the North Star, which is an important reference point for finding direction in the northern hemisphere.',
+    score: '0',
     isActive: true,
     name: 'Ursa Major',
     id: 's1',
@@ -21,7 +24,10 @@ export const Starlight = [
       [6, 7],
     ],
   },
-  {score:'0',
+  {
+    instructions:
+      'The constellation Lyra is home to one of the brightest stars in the night sky, Vega. Vega is not only the brightest star in the Lyra constellation, but also one of the closest stars to Earth visible to the naked eye.',
+    score: '0',
     isActive: false,
     name: 'Lyra',
     id: 's2',
@@ -40,7 +46,10 @@ export const Starlight = [
       [1, 4],
     ],
   },
-  {score:'0',
+  {
+    instructions:
+      'The constellation Gemini is known for its bright stars Castor and Pollux, which represent the twins in this astronomical group. These two stars have special significance not only in astronomy, but also in mythology. ',
+    score: '0',
     isActive: false,
     name: 'Gemini',
     id: 's3',
@@ -66,7 +75,10 @@ export const Starlight = [
       [8, 9],
     ],
   },
-  {score:'0',
+  {
+    instructions:
+      'The constellation of Libra is unique in that its symbolism and historical meaning are closely related to the concept of balance and justice. The name "Libra" comes from the Latin word for "weights", which symbolizes the scales of justice. This constellation represents the principles of balance and harmony that were important in ancient civilizations.',
+    score: '0',
     isActive: false,
     name: 'Libra',
     id: 's4',
@@ -91,7 +103,10 @@ export const Starlight = [
       [7, 8],
     ],
   },
-  {score:'0',
+  {
+    instructions:
+      'The constellation Scorpius is noted for its impressive shape, which resembles a real scorpion, and is one of the brightest and most visible constellations in the night sky. One of the most fascinating features of the constellation is its bright star Antares, which is considered the "heart" of the scorpion.Antares (α Scorpius) is a red supergiant and one of the brightest stars in the night sky. Its red color and huge size make it easily recognizable. Antares means "Rival of Mars" in Arabic, which indicates its brightness, which is similar to the brightness of the planet Mars. ',
+    score: '0',
     isActive: false,
     name: 'Scorpius',
     id: 's5',
@@ -117,7 +132,10 @@ export const Starlight = [
       [8, 9],
     ],
   },
-  {score:'0',
+  {
+    instructions:
+      'The Aries constellation is known for representing the mythical ram with golden horns, which in ancient Greek mythology was stolen by Phineus to escape persecution. This ram, which saved Phineas and his sister Hella, was later placed in the sky, becoming the constellation Aries. One of the key features of Aries is α Aries (Ariel), which is one of the brightest stars in the constellation. This star is a variable star, which means that its brightness changes over time, allowing astronomers to study the properties of such stars.',
+    score: '0',
     isActive: false,
     name: 'Aries',
     id: 's6',
@@ -133,7 +151,9 @@ export const Starlight = [
       [3, 4],
     ],
   },
-  {score:'0',
+  {
+    instructions: 'The Cancer constellation is one of the twelve zodiacal constellations and represents the mythical crab mentioned in ancient Greek mythology. In the myths, the crab was sent by the goddess Herea to attack Hercules as he performed his labors. Although the crab was beaten by Hercules, his memory was immortalized in the sky, and he became the constellation Cancer.',
+    score: '0',
     isActive: false,
     name: 'Cancer',
     id: 's7',
@@ -151,7 +171,9 @@ export const Starlight = [
       [3, 5],
     ],
   },
-  {score:'0',
+  {
+    instructions: 'The constellation Leo is one of the most famous and majestic constellations in the night sky, and its shape really resembles a huge lion. In ancient Greek mythology, this constellation is associated with the Nemean Lion, which was the first of the twelve laborers of Hercules. The lion was a powerful and unstoppable beast that terrorized the neighborhood of Nimea, and its victory was a great achievement for the hero.',
+    score: '0',
     isActive: false,
     name: 'Lion',
     id: 's8',
@@ -178,7 +200,9 @@ export const Starlight = [
       [8, 9],
     ],
   },
-  {score:'0',
+  {
+    instructions: 'The constellation Orion is one of the most famous and easily recognizable constellations in the night sky due to its location and bright stars. Orion symbolizes the mythical hunter Orion, who, according to ancient Greek legend, was so beautiful and powerful that the goddess Artemis was enchanted by him. ',
+    score: '0',
     isActive: false,
     name: 'Orion',
     id: 's9',
@@ -207,7 +231,9 @@ export const Starlight = [
       [9, 10],
     ],
   },
-  {score:'0',
+  {
+    instructions: 'The Pisces constellation is one of the 12 zodiacal constellations and symbolizes two fish connected by a thread. In ancient Greek mythology, these fish represent the gods Aphrodite and Eros, who turned into fish to escape the monster Typhon by plunging into the Euphrates River.',
+    score: '0',
     isActive: false,
     name: 'Pisces',
     id: 's10',
