@@ -109,13 +109,9 @@ const MainScreen = ({route, navigation}) => {
     }
   };
   const gameOver = () => {
-    Alert.alert(
-      'Game Over',
-      'You lose! Your score has reached 0.',
-      [
-        { text: 'OK', onPress: () => navigation.navigate('ChooseStarlight') }
-      ]
-    );
+    Alert.alert('Game Over', 'You lose! Your score has reached 0.', [
+      {text: 'OK', onPress: () => navigation.navigate('ChooseStarlight')},
+    ]);
   };
 
   const resetGame = () => {
@@ -274,7 +270,7 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   button: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 25,
@@ -287,12 +283,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   resetButton: {
-    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+    backgroundColor: 'rgba(255, 0, 0, 0.4)',
   },
   buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
+    // color: '#ffffff',
+    fontSize: 18,
     fontWeight: 'bold',
+    color: 'rgba(255, 215, 0, 1)',
+    textAlign:'center'
   },
 });
 
