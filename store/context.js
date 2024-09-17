@@ -89,12 +89,33 @@ export const AppProvider = ({children}) => {
     }
   };
 
+  const resetGame = async () => {
+    try {
+      // Reset starlightData to initial state
+      setStarlightData(initialStarlight);
+      await AsyncStorage.setItem('starlightData', JSON.stringify(initialStarlight));
+
+      // Reset totalScore to 0
+      setTotalScore(0);
+      await AsyncStorage.setItem('totalScore', '0');
+
+      // Reset unlockedCount to 1 (first constellation unlocked by default)
+      setUnlockedCount(1);
+      await AsyncStorage.setItem('unlockedCount', '1');
+
+      console.log('Game reset successfully');
+    } catch (error) {
+      console.error('Error resetting game:', error);
+    }
+  };
+
   const value = {
     starlightData,
     updateScore,
     unlockConstellation,
     totalScore,
     getUnlockCost,
+    resetGame, // Add this to the context value
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

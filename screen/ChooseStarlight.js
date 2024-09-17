@@ -13,8 +13,7 @@ import {useAppContext} from '../store/context';
 import {IconReset} from '../components/icon';
 
 const ChooseStarlight = ({navigation}) => {
-  const {starlightData, unlockConstellation, totalScore, getUnlockCost} =
-    useAppContext();
+  const {starlightData, unlockConstellation, totalScore, getUnlockCost, resetGame} = useAppContext();
 
   function navigateTo(id) {
     console.log(id);
@@ -50,6 +49,26 @@ const ChooseStarlight = ({navigation}) => {
     }
   }
 
+  const handleReset = () => {
+    Alert.alert(
+      'Reset Game',
+      'Are you sure you want to reset the game? All progress will be lost.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Reset',
+          onPress: async () => {
+            await resetGame();
+            Alert.alert('Game Reset', 'The game has been reset successfully.');
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
@@ -82,7 +101,7 @@ const ChooseStarlight = ({navigation}) => {
             );
           })}
         </ScrollView>
-        <IconReset />
+        <IconReset onPress={handleReset} />
       </SafeAreaView>
     </MainLayout>
   );
