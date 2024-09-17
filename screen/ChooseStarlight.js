@@ -8,15 +8,17 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { MainLayout } from '../components/layout';
-import { useAppContext } from '../store/context';
+import {MainLayout} from '../components/layout';
+import {useAppContext} from '../store/context';
+import {IconReset} from '../components/icon';
 
-const ChooseStarlight = ({ navigation }) => {
-  const { starlightData, unlockConstellation, totalScore, getUnlockCost } = useAppContext();
+const ChooseStarlight = ({navigation}) => {
+  const {starlightData, unlockConstellation, totalScore, getUnlockCost} =
+    useAppContext();
 
   function navigateTo(id) {
     console.log(id);
-    navigation.navigate('MainScreen', { constellationId: id });
+    navigation.navigate('MainScreen', {constellationId: id});
   }
 
   function handlePress(star) {
@@ -43,7 +45,7 @@ const ChooseStarlight = ({ navigation }) => {
               }
             },
           },
-        ]
+        ],
       );
     }
   }
@@ -63,26 +65,24 @@ const ChooseStarlight = ({ navigation }) => {
                 style={[
                   styles.button,
                   !star.isActive && styles.inactiveButton,
-                ]}
-              >
+                ]}>
                 <Text
-                  style={[
-                    styles.text,
-                    !star.isActive && styles.inactiveText,
-                  ]}
-                >
+                  style={[styles.text, !star.isActive && styles.inactiveText]}>
                   {star.name}
                 </Text>
                 {star.score !== '0' && (
                   <Text style={styles.scoreText}>Score: {star.score}</Text>
                 )}
                 {!star.isActive && (
-                  <Text style={styles.unlockText}>Unlock for {getUnlockCost()} points</Text>
+                  <Text style={styles.unlockText}>
+                    Unlock for {getUnlockCost()} points
+                  </Text>
                 )}
               </TouchableOpacity>
             );
           })}
         </ScrollView>
+        <IconReset />
       </SafeAreaView>
     </MainLayout>
   );
