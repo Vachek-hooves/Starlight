@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ChooseStarlight, MainScreen} from './screen';
+import {ChooseStarlight, MainScreen, WelcomeScreen} from './screen';
 import {AppProvider} from './store/context';
 
 const Stack = createNativeStackNavigator();
@@ -19,8 +19,9 @@ function App() {
           screenOptions={{
             headerShown: false,
             animation: 'fade_from_bottom',
-            animationDuration: 800,
+            animationDuration: 1800,
           }}>
+          <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
           <Stack.Screen name="ChooseStarlight" component={ChooseStarlight} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
         </Stack.Navigator>
