@@ -103,7 +103,15 @@ const MainScreen = ({route, navigation}) => {
     if (isCorrect) {
       updateScore(constellation.id, score);
       Alert.alert(
-        `Congratulations! You've correctly placed the ${constellation.name} constellation!`,
+        `Congratulations! You've correctly placed the ${constellation.name} constellation!`,[
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('Navigating to ChooseStarlight');
+              navigation.navigate('ChooseStarlight');
+            }
+          }
+        ]
       );
     } else {
       if (score === 0) {
@@ -116,7 +124,13 @@ const MainScreen = ({route, navigation}) => {
   };
   const gameOver = () => {
     Alert.alert('Game Over', 'You lose! Your score has reached 0.', [
-      {text: 'OK', onPress: () => navigation.navigate('ChooseStarlight')},
+      {
+        text: 'OK',
+        onPress: () => {
+          console.log('Game Over: Navigating to ChooseStarlight');
+          navigation.navigate('ChooseStarlight');
+        }
+      },
     ]);
   };
 
