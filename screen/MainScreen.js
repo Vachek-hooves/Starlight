@@ -9,9 +9,11 @@ import {
   ImageBackground,
   Alert,
   ScrollView,
+  Modal,
 } from 'react-native';
 import {useAppContext} from '../store/context';
-import { IconReturn } from '../components/icon';
+import {IconReturn} from '../components/icon';
+import ContinuousShootingStars from '../components/ui/ContinuousShootingStars';
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
@@ -26,6 +28,7 @@ const MainScreen = ({route, navigation}) => {
   const [selectedStar, setSelectedStar] = useState(null);
   const [score, setScore] = useState(100);
   const [constellation, setConstellation] = useState(null);
+  const [isInstructionsVisible, setIsInstructionsVisible] = useState(false);
 
   useEffect(() => {
     const selectedConstellation = starlightData.find(
@@ -111,9 +114,9 @@ const MainScreen = ({route, navigation}) => {
             onPress: () => {
               console.log('Navigating to ChooseStarlight');
               navigation.navigate('ChooseStarlight');
-            }
-          }
-        ]
+            },
+          },
+        ],
       );
     } else {
       if (score === 0) {
@@ -137,10 +140,14 @@ const MainScreen = ({route, navigation}) => {
     initializeStars(constellation);
   };
 
+  const toggleInstructions = () => {
+    setIsInstructionsVisible(!isInstructionsVisible);
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/img/bg/skybg.jpg')} // Adjust the path as needed
+        source={require('../assets/img/bg/skybg.jpg')}
         style={styles.background}>
         <Text style={styles.title}>
           Constellation Game: {constellation?.name}
@@ -202,8 +209,33 @@ const MainScreen = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <IconReturn />
+        <View style={styles.navigationButtons}>
+          <TouchableOpacity
+            style={styles.instructionsButton}
+            onPress={toggleInstructions}>
+            <Text style={styles.instructionsButtonText}>?</Text>
+          </TouchableOpacity>
+          <IconReturn />
+        </View>
       </ImageBackground>
+      <ContinuousShootingStars />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isInstructionsVisible}
+        onRequestClose={toggleInstructions}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>About</Text>
+            <Text style={styles.modalText}>{constellation?.instructions}</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={toggleInstructions}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -311,6 +343,65 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'rgba(255, 215, 0, 1)',
     textAlign: 'center',
+  },
+  navigationButtons: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 40,
+    left: 20,
+    right: 20,
+    marginHorizontal: 40,
+  },
+  instructionsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  instructionsButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  modalContent: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    padding: 20,
+    width: '80%',
+    maxHeight: '80%',
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+    lineHeight:22
+  },
+  closeButton: {
+    backgroundColor: 'rgba(255, 0, 0, 0.6)',
+    padding: 15,
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+  closeButtonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize:18
   },
 });
 

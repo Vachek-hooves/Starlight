@@ -7,7 +7,7 @@ const IconReturn = () => {
   return (
     <TouchableOpacity
       onPress={() => navigation.goBack()}
-      style={{alignSelf: 'flex-end', marginRight: 70, bottom: 40,marginTop:50}}>
+      style={{alignSelf: 'flex-end', marginRight: 70, }}>
       <Image
         source={require('../../assets/icon/return.png')}
         style={{
