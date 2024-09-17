@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useAppContext} from '../store/context';
 import { IconReturn } from '../components/icon';
+import ContinuousShootingStars from '../components/ui/ContinuousShootingStars';
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
@@ -204,6 +205,7 @@ const MainScreen = ({route, navigation}) => {
         </ScrollView>
         <IconReturn />
       </ImageBackground>
+      <ContinuousShootingStars />
     </View>
   );
 };
