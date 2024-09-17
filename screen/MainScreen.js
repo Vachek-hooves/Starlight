@@ -11,8 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {useAppContext} from '../store/context';
-import {IconReturn} from '../components/icon';
-import { ContinuousShootingStars } from '../components/ui/ShootingStar';
+import { IconReturn } from '../components/icon';
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
@@ -27,7 +26,6 @@ const MainScreen = ({route, navigation}) => {
   const [selectedStar, setSelectedStar] = useState(null);
   const [score, setScore] = useState(100);
   const [constellation, setConstellation] = useState(null);
-  const [showShootingStar, setShowShootingStar] = useState(false);
 
   useEffect(() => {
     const selectedConstellation = starlightData.find(
@@ -104,22 +102,19 @@ const MainScreen = ({route, navigation}) => {
 
     if (isCorrect) {
       updateScore(constellation.id, score);
-      setShowShootingStar(true);
-      setTimeout(() => {
-        Alert.alert(
-          'Congratulations!',
-          `You've correctly traced the ${constellation.name} constellation!`,
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                console.log('Navigating to ChooseStarlight');
-                navigation.navigate('ChooseStarlight');
-              }
+      Alert.alert(
+        'Congratulations!',
+        `You've correctly traced the ${constellation.name} constellation!`,
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('Navigating to ChooseStarlight');
+              navigation.navigate('ChooseStarlight');
             }
-          ]
-        );
-      }, 1500);
+          }
+        ]
+      );
     } else {
       if (score === 0) {
         gameOver();
@@ -207,12 +202,7 @@ const MainScreen = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        {/* <View style={{height: 30}}></View> */}
-        {showShootingStar && (
-          <ShootingStar onAnimationEnd={() => setShowShootingStar(false)} />
-        )}
         <IconReturn />
-        <ContinuousShootingStars />
       </ImageBackground>
     </View>
   );
