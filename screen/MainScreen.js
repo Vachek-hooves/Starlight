@@ -13,7 +13,7 @@ import {Starlight} from '../data/data';
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
-const GAME_AREA_HEIGHT = height * 0.7;
+const GAME_AREA_HEIGHT = height * 0.6;
 const STAR_SIZE = 22;
 
 const MainScreen = ({route, navigation}) => {
@@ -200,10 +200,10 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 50,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   title: {
     fontSize: 24,
