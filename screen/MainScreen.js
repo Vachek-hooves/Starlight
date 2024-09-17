@@ -100,9 +100,22 @@ const MainScreen = ({route, navigation}) => {
         `Congratulations! You've correctly placed the ${constellation.name} constellation!`,
       );
     } else {
-      Alert.alert('Not quite right. Try again!');
-      setScore(Math.max(0, score - 10));
+      if (score === 0) {
+        gameOver();
+      } else {
+        Alert.alert('Not quite right. Try again!');
+        setScore(Math.max(0, score - 10));
+      }
     }
+  };
+  const gameOver = () => {
+    Alert.alert(
+      'Game Over',
+      'You lose! Your score has reached 0.',
+      [
+        { text: 'OK', onPress: () => navigation.navigate('ChooseStarlight') }
+      ]
+    );
   };
 
   const resetGame = () => {
