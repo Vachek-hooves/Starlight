@@ -108,7 +108,7 @@ const MainScreen = ({route, navigation}) => {
   const resetGame = () => {
     setLines([]);
     setSelectedStar(null);
-    setScore(100);
+    // setScore(100);
     initializeStars(constellation);
   };
 
