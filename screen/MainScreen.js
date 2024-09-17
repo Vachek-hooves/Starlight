@@ -8,8 +8,10 @@ import {
   SafeAreaView,
   ImageBackground,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {Starlight} from '../data/data';
+import {IconReturn} from '../components/icon';
 
 const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
@@ -129,61 +131,64 @@ const MainScreen = ({route, navigation}) => {
         <Text style={styles.title}>
           Constellation Game: {constellation?.name}
         </Text>
-        <View
-          style={[
-            styles.gameArea,
-            {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
-          ]}>
-          {lines.map((line, index) => {
-            const startX = line.start.left + STAR_SIZE / 2;
-            const startY = line.start.top + STAR_SIZE / 2;
-            const endX = line.end.left + STAR_SIZE / 2;
-            const endY = line.end.top + STAR_SIZE / 2;
-            const length = Math.sqrt(
-              Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2),
-            );
-            const angle = Math.atan2(endY - startY, endX - startX);
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={[
+              styles.gameArea,
+              {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
+            ]}>
+            {lines.map((line, index) => {
+              const startX = line.start.left + STAR_SIZE / 2;
+              const startY = line.start.top + STAR_SIZE / 2;
+              const endX = line.end.left + STAR_SIZE / 2;
+              const endY = line.end.top + STAR_SIZE / 2;
+              const length = Math.sqrt(
+                Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2),
+              );
+              const angle = Math.atan2(endY - startY, endX - startX);
 
-            return (
-              <View
-                key={index}
+              return (
+                <View
+                  key={index}
+                  style={[
+                    styles.line,
+                    {
+                      left: startX,
+                      top: startY,
+                      width: length,
+                      transform: [{rotate: `${angle}rad`}],
+                    },
+                  ]}
+                />
+              );
+            })}
+            {stars.map(star => (
+              <TouchableOpacity
+                key={star.id}
                 style={[
-                  styles.line,
-                  {
-                    left: startX,
-                    top: startY,
-                    width: length,
-                    transform: [{rotate: `${angle}rad`}],
-                  },
+                  styles.star,
+                  {top: star.top, left: star.left},
+                  star.isConstellation
+                    ? styles.constellationStar
+                    : styles.randomStar,
                 ]}
+                onPress={() => handleStarPress(star)}
               />
-            );
-          })}
-          {stars.map(star => (
+            ))}
+          </View>
+          <Text style={styles.score}>Score: {score}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={checkWin}>
+              <Text style={styles.buttonText}>Check Solution</Text>
+            </TouchableOpacity>
             <TouchableOpacity
-              key={star.id}
-              style={[
-                styles.star,
-                {top: star.top, left: star.left},
-                star.isConstellation
-                  ? styles.constellationStar
-                  : styles.randomStar,
-              ]}
-              onPress={() => handleStarPress(star)}
-            />
-          ))}
-        </View>
-        <Text style={styles.score}>Score: {score}</Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={checkWin}>
-            <Text style={styles.buttonText}>Check Solution</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.resetButton]}
-            onPress={resetGame}>
-            <Text style={styles.buttonText}>Reset</Text>
-          </TouchableOpacity>
-        </View>
+              style={[styles.button, styles.resetButton]}
+              onPress={resetGame}>
+              <Text style={styles.buttonText}>Reset</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <IconReturn />
       </ImageBackground>
     </View>
   );
@@ -290,7 +295,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'rgba(255, 215, 0, 1)',
-    textAlign:'center'
+    textAlign: 'center',
   },
 });
 
