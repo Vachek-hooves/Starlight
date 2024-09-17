@@ -10,7 +10,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import {Starlight} from '../data/data';
+import {useAppContext} from '../store/context';
 import {IconReturn} from '../components/icon';
 
 const {width, height} = Dimensions.get('window');
@@ -20,6 +20,7 @@ const STAR_SIZE = 22;
 
 const MainScreen = ({route, navigation}) => {
   const {constellationId} = route.params;
+  const {starlightData, updateScore} = useAppContext();
   const [stars, setStars] = useState([]);
   const [lines, setLines] = useState([]);
   const [selectedStar, setSelectedStar] = useState(null);
@@ -27,10 +28,12 @@ const MainScreen = ({route, navigation}) => {
   const [constellation, setConstellation] = useState(null);
 
   useEffect(() => {
-    const selectedConstellation = Starlight.find(c => c.id === constellationId);
+    const selectedConstellation = starlightData.find(
+      c => c.id === constellationId,
+    );
     setConstellation(selectedConstellation);
     initializeStars(selectedConstellation);
-  }, [constellationId]);
+  }, [constellationId, starlightData]);
 
   const initializeStars = selectedConstellation => {
     if (!selectedConstellation) return;
@@ -98,6 +101,7 @@ const MainScreen = ({route, navigation}) => {
     console.log('Is correct:', isCorrect);
 
     if (isCorrect) {
+      updateScore(constellation.id, score);
       Alert.alert(
         `Congratulations! You've correctly placed the ${constellation.name} constellation!`,
       );
