@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
-import { Starlight } from '../data/data';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+  ImageBackground,
+  Alert,
+} from 'react-native';
+import {Starlight} from '../data/data';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
 const GAME_AREA_HEIGHT = height * 0.7;
 const STAR_SIZE = 22;
 
-const MainScreen = ({ route, navigation }) => {
-  const { constellationId } = route.params;
+const MainScreen = ({route, navigation}) => {
+  const {constellationId} = route.params;
   const [stars, setStars] = useState([]);
   const [lines, setLines] = useState([]);
   const [selectedStar, setSelectedStar] = useState(null);
@@ -21,7 +30,7 @@ const MainScreen = ({ route, navigation }) => {
     initializeStars(selectedConstellation);
   }, [constellationId]);
 
-  const initializeStars = (selectedConstellation) => {
+  const initializeStars = selectedConstellation => {
     if (!selectedConstellation) return;
 
     const centerX = GAME_AREA_WIDTH * 0.5;
@@ -30,21 +39,30 @@ const MainScreen = ({ route, navigation }) => {
     const scaleX = scaleY * 1.2;
 
     const constrainPosition = (x, y) => ({
-      left: Math.max(STAR_SIZE/2, Math.min(x, GAME_AREA_WIDTH - STAR_SIZE/2)),
-      top: Math.max(STAR_SIZE/2, Math.min(y, GAME_AREA_HEIGHT - STAR_SIZE/2))
+      left: Math.max(
+        STAR_SIZE / 2,
+        Math.min(x, GAME_AREA_WIDTH - STAR_SIZE / 2),
+      ),
+      top: Math.max(
+        STAR_SIZE / 2,
+        Math.min(y, GAME_AREA_HEIGHT - STAR_SIZE / 2),
+      ),
     });
 
     const constellationStars = selectedConstellation.position.map(star => ({
       id: star.id,
-      ...constrainPosition(centerX + star.xFactor * scaleX, centerY + star.yFactor * scaleY),
+      ...constrainPosition(
+        centerX + star.xFactor * scaleX,
+        centerY + star.yFactor * scaleY,
+      ),
       isConstellation: true,
     }));
 
-    const randomStars = Array.from({ length: 2 }, (_, i) => ({
+    const randomStars = Array.from({length: 2}, (_, i) => ({
       id: i + constellationStars.length + 1,
       ...constrainPosition(
         Math.random() * GAME_AREA_WIDTH,
-        Math.random() * GAME_AREA_HEIGHT
+        Math.random() * GAME_AREA_HEIGHT,
       ),
       isConstellation: false,
     }));
@@ -52,35 +70,37 @@ const MainScreen = ({ route, navigation }) => {
     setStars([...constellationStars, ...randomStars]);
   };
 
-  const handleStarPress = (star) => {
+  const handleStarPress = star => {
     if (!selectedStar) {
       setSelectedStar(star);
     } else if (selectedStar.id !== star.id) {
-      setLines([...lines, { start: selectedStar, end: star }]);
+      setLines([...lines, {start: selectedStar, end: star}]);
       setSelectedStar(null);
     }
   };
 
   const checkWin = () => {
-    const playerConnections = lines.map(line => 
-      [line.start.id, line.end.id].sort((a, b) => a - b)
+    const playerConnections = lines.map(line =>
+      [line.start.id, line.end.id].sort((a, b) => a - b),
     );
-    console.log("Player connections:", playerConnections);
-    console.log("Correct connections:", constellation.connections);
-  
-    const isCorrect = constellation.connections.every(conn => 
-      playerConnections.some(playerConn => 
-        playerConn[0] === conn[0] && playerConn[1] === conn[1]
-      )
-    ) && playerConnections.length === constellation.connections.length;
-  
-    console.log("Is correct:", isCorrect);
-  
+    console.log('Player connections:', playerConnections);
+    console.log('Correct connections:', constellation.connections);
+
+    const isCorrect =
+      constellation.connections.every(conn =>
+        playerConnections.some(
+          playerConn => playerConn[0] === conn[0] && playerConn[1] === conn[1],
+        ),
+      ) && playerConnections.length === constellation.connections.length;
+
+    console.log('Is correct:', isCorrect);
 
     if (isCorrect) {
-      alert(`Congratulations! You've correctly placed the ${constellation.name} constellation!`);
+      Alert.alert(
+        `Congratulations! You've correctly placed the ${constellation.name} constellation!`,
+      );
     } else {
-      alert('Not quite right. Try again!');
+      Alert.alert('Not quite right. Try again!');
       setScore(Math.max(0, score - 10));
     }
   };
@@ -97,7 +117,9 @@ const MainScreen = ({ route, navigation }) => {
       <ImageBackground
         source={require('../assets/img/bg/skybg.jpg')} // Adjust the path as needed
         style={styles.background}>
-        <Text style={styles.title}>Constellation Game: {constellation?.name}</Text>
+        <Text style={styles.title}>
+          Constellation Game: {constellation?.name}
+        </Text>
         <View
           style={[
             styles.gameArea,
@@ -108,7 +130,9 @@ const MainScreen = ({ route, navigation }) => {
             const startY = line.start.top + STAR_SIZE / 2;
             const endX = line.end.left + STAR_SIZE / 2;
             const endY = line.end.top + STAR_SIZE / 2;
-            const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            const length = Math.sqrt(
+              Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2),
+            );
             const angle = Math.atan2(endY - startY, endX - startX);
 
             return (
@@ -120,13 +144,13 @@ const MainScreen = ({ route, navigation }) => {
                     left: startX,
                     top: startY,
                     width: length,
-                    transform: [{ rotate: `${angle}rad` }]
-                  }
+                    transform: [{rotate: `${angle}rad`}],
+                  },
                 ]}
               />
             );
           })}
-          {stars.map((star) => (
+          {stars.map(star => (
             <TouchableOpacity
               key={star.id}
               style={[
