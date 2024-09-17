@@ -1,3 +1,4 @@
 import MainLayout from './MainLayout';
+import WelcomeLayout from './WelcomeLayout';
 
-export {MainLayout};
+export {MainLayout, WelcomeLayout};

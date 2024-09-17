@@ -1,13 +1,13 @@
 import {ImageBackground} from 'react-native';
 
-const MainLayout = ({children}) => {
+const WelcomeLayout = ({children}) => {
   return (
     <ImageBackground
-      source={require('../../assets/img/bg/skybg.jpg')}
+      source={require('../../assets/img/bg/skyClear.jpg')}
       style={{flex: 1}}>
       {children}
     </ImageBackground>
   );
 };
 
-export default MainLayout;
+export default WelcomeLayout;
