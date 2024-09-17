@@ -6,34 +6,63 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import { MainLayout } from '../components/layout';
 import { useAppContext } from '../store/context';
 
 const ChooseStarlight = ({ navigation }) => {
-  const { starlightData } = useAppContext();
+  const { starlightData, unlockConstellation, totalScore } = useAppContext();
 
   function navigateTo(id) {
     console.log(id);
     navigation.navigate('MainScreen', { constellationId: id });
   }
 
+  function handlePress(star) {
+    if (star.isActive) {
+      navigateTo(star.id);
+    } else {
+      Alert.alert(
+        'Unlock Constellation',
+        `Do you want to unlock ${star.name} for 60 points?`,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Unlock',
+            onPress: async () => {
+              const success = await unlockConstellation(star.id);
+              if (success) {
+                Alert.alert('Success', `${star.name} has been unlocked!`);
+              } else {
+                Alert.alert('Error', 'Not enough points to unlock.');
+              }
+            },
+          },
+        ]
+      );
+    }
+  }
+
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
+        <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
           {starlightData.map((star, i) => {
             return (
               <TouchableOpacity
-                onPress={() => star.isActive && navigateTo(star.id)}
+                onPress={() => handlePress(star)}
                 key={i}
                 style={[
                   styles.button,
                   !star.isActive && styles.inactiveButton,
                 ]}
-                disabled={!star.isActive}
               >
                 <Text
                   style={[
@@ -45,6 +74,9 @@ const ChooseStarlight = ({ navigation }) => {
                 </Text>
                 {star.score !== '0' && (
                   <Text style={styles.scoreText}>Score: {star.score}</Text>
+                )}
+                {!star.isActive && (
+                  <Text style={styles.unlockText}>Unlock for 60 points</Text>
                 )}
               </TouchableOpacity>
             );
@@ -90,6 +122,17 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     fontSize: 18,
+    color: '#ffd700',
+    marginTop: 5,
+  },
+  totalScore: {
+    fontSize: 24,
+    color: '#ffd700',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  unlockText: {
+    fontSize: 14,
     color: '#ffd700',
     marginTop: 5,
   },
