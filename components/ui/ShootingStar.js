@@ -57,7 +57,7 @@ const ShootingStar = ({ delay = 0, duration = 1500, startX, startY, endX, endY }
   );
 };
 
- const ShootingStarField = ({ count = 6, onAnimationEnd = () => {} }) => {
+const ShootingStarField = ({ count = 6, onAnimationEnd = () => {} }) => {
   const stars = Array.from({ length: count }, (_, i) => ({
     key: i,
     startX: Math.random() * width,
@@ -82,63 +82,14 @@ const ShootingStar = ({ delay = 0, duration = 1500, startX, startY, endX, endY }
   );
 };
 
-
-const ContinuousShootingStars = () => {
-    const [stars, setStars] = useState([]);
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        const newStar = {
-          id: Date.now(),
-          startX: Math.random() * width,
-          startY: -10,
-          endX: Math.random() * width,
-          endY: height + 10,
-          duration: 1500 + Math.random() * 500,
-        };
-        setStars(prevStars => [...prevStars, newStar]);
-      }, 1000);
-  
-      return () => clearInterval(interval);
-    }, []);
-  
-    useEffect(() => {
-      if (stars.length > 10) {
-        setStars(prevStars => prevStars.slice(1));
-      }
-    }, [stars]);
-  
-    return (
-      <View style={[StyleSheet.absoluteFill, styles.starContainer]}>
-        {stars.map(star => (
-          <ShootingStar key={star.id} {...star} />
-        ))}
-      </View>
-    );
-  };
-
 const styles = StyleSheet.create({
-//   star: {
-//     width: 3,
-//     height: 3,
-//     borderRadius: 1.5,
-//     backgroundColor: '#fff',
-//     position: 'absolute',
-//   },
-starContainer: {
-    pointerEvents: 'none', // This allows touch events to pass through
-},
-star: {
-  width: 3,
-  height: 3,
-  borderRadius: 1.5,
-  backgroundColor: '#fff',
-  position: 'absolute',
-  shadowColor: '#fff',
-  shadowOpacity: 0.8,
-  shadowRadius: 4,
-  shadowOffset: { width: 0, height: 0 },
-},
+  star: {
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: '#fff',
+    position: 'absolute',
+  },
 });
 
-export { ContinuousShootingStars, ShootingStar };
+export { ShootingStar, ShootingStarField };
