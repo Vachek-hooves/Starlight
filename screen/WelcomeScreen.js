@@ -1,10 +1,11 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {Animated, StyleSheet, Text, View} from 'react-native';
 import {MainLayout, WelcomeLayout} from '../components/layout';
 
 const WelcomeScreen = ({navigation}) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.3)).current;
+  const [shootingStars, setShootingStars] = useState([]);
 
   useEffect(() => {
     Animated.parallel([
@@ -22,13 +23,62 @@ const WelcomeScreen = ({navigation}) => {
     ]).start(() => {
       setTimeout(() => navigation.navigate('ChooseStarlight'), 1500);
     });
+
+    // Add shooting star every second
+    const interval = setInterval(() => {
+      setShootingStars(prev => [...prev, Date.now()]);
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [fadeAnim, scaleAnim]);
+
+  const renderShootingStar = (key) => {
+    const startX = Math.random() * 100;
+    const startY = Math.random() * 100;
+    const endX = startX + 20;
+    const endY = startY + 20;
+
+    return (
+      <Animated.View
+        key={key}
+        style={[
+          styles.shootingStar,
+          {
+            left: `${startX}%`,
+            top: `${startY}%`,
+          },
+        ]}
+      >
+        <Animated.View
+          style={[
+            styles.shootingStarTail,
+            {
+              transform: [
+                {
+                  translateX: new Animated.Value(0).interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, endX - startX],
+                  }),
+                },
+                {
+                  translateY: new Animated.Value(0).interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, endY - startY],
+                  }),
+                },
+              ],
+            },
+          ]}
+        />
+      </Animated.View>
+    );
+  };
 
   return (
     <WelcomeLayout>
       <View style={styles.container}>
         <View style={styles.starsContainer}>
-          {[...Array(150)].map((_, i) => (
+          {[...Array(50)].map((_, i) => (
             <View
               key={i}
               style={[
@@ -40,6 +90,7 @@ const WelcomeScreen = ({navigation}) => {
               ]}
             />
           ))}
+          {shootingStars.map(renderShootingStar)}
         </View>
         <View style={styles.contentContainer}>
           <Animated.View
@@ -67,8 +118,8 @@ const styles = StyleSheet.create({
   },
   star: {
     position: 'absolute',
-    width: 4,
-    height: 4,
+    width: 2,
+    height: 2,
     borderRadius: 1,
     backgroundColor: 'white',
   },
@@ -88,5 +139,19 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: '#e0e0e0',
     textAlign: 'center',
+  },
+  shootingStar: {
+    position: 'absolute',
+    width: 2,
+    height: 2,
+    backgroundColor: 'white',
+    borderRadius: 1,
+  },
+  shootingStarTail: {
+    position: 'absolute',
+    width: 40,
+    height: 2,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 1,
   },
 });
