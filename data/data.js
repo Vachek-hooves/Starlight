@@ -1,5 +1,6 @@
 export const Starlight = [
-  {
+  {score:'0',
+    isActive: true,
     name: 'Ursa Major',
     id: 's1',
     position: [
@@ -20,7 +21,8 @@ export const Starlight = [
       [6, 7],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Lyra',
     id: 's2',
     position: [
@@ -38,7 +40,8 @@ export const Starlight = [
       [1, 4],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Gemini',
     id: 's3',
     position: [
@@ -63,7 +66,8 @@ export const Starlight = [
       [8, 9],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Libra',
     id: 's4',
     position: [
@@ -87,7 +91,8 @@ export const Starlight = [
       [7, 8],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Scorpius',
     id: 's5',
     position: [
@@ -112,7 +117,8 @@ export const Starlight = [
       [8, 9],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Aries',
     id: 's6',
     position: [
@@ -127,7 +133,8 @@ export const Starlight = [
       [3, 4],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Cancer',
     id: 's7',
     position: [
@@ -144,7 +151,8 @@ export const Starlight = [
       [3, 5],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Lion',
     id: 's8',
     position: [
@@ -170,7 +178,8 @@ export const Starlight = [
       [8, 9],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Orion',
     id: 's9',
     position: [
@@ -198,7 +207,8 @@ export const Starlight = [
       [9, 10],
     ],
   },
-  {
+  {score:'0',
+    isActive: false,
     name: 'Pisces',
     id: 's10',
     position: [
