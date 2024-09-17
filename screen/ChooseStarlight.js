@@ -12,7 +12,7 @@ import { MainLayout } from '../components/layout';
 import { useAppContext } from '../store/context';
 
 const ChooseStarlight = ({ navigation }) => {
-  const { starlightData, unlockConstellation, totalScore } = useAppContext();
+  const { starlightData, unlockConstellation, totalScore, getUnlockCost } = useAppContext();
 
   function navigateTo(id) {
     console.log(id);
@@ -23,9 +23,10 @@ const ChooseStarlight = ({ navigation }) => {
     if (star.isActive) {
       navigateTo(star.id);
     } else {
+      const unlockCost = getUnlockCost();
       Alert.alert(
         'Unlock Constellation',
-        `Do you want to unlock ${star.name} for 60 points?`,
+        `Do you want to unlock ${star.name} for ${unlockCost} points?`,
         [
           {
             text: 'Cancel',
@@ -76,7 +77,7 @@ const ChooseStarlight = ({ navigation }) => {
                   <Text style={styles.scoreText}>Score: {star.score}</Text>
                 )}
                 {!star.isActive && (
-                  <Text style={styles.unlockText}>Unlock for 60 points</Text>
+                  <Text style={styles.unlockText}>Unlock for {getUnlockCost()} points</Text>
                 )}
               </TouchableOpacity>
             );
