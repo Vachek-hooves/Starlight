@@ -26,7 +26,7 @@ const ArticleCard = ({theme, articles, onPress}) => (
         'rgba(255,255,255,0.01)',
       ]}
       style={styles.card}>
-      <Text style={styles.cardTheme}>{theme}</Text>
+      <Text style={styles.cardTheme}>{theme.toUpperCase()}</Text>
       {articles.map(article => (
         <View key={article.id} style={styles.articleItem}>
           <Text style={styles.articleTitle}>{article.title}</Text>
@@ -45,23 +45,22 @@ const ArticleScreen = () => {
   };
 
   return (
-   
-      <MainLayout>
-        <SafeAreaView style={styles.safeArea}>
-          <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
-          <ScrollView contentContainerStyle={styles.container}>
-            {articles.map(themeGroup => (
-              <ArticleCard
-                key={themeGroup.theme}
-                theme={themeGroup.theme}
-                articles={themeGroup.article}
-                onPress={() => handleCardPress(themeGroup)}
-              />
-            ))}
-          </ScrollView>
-        </SafeAreaView>
-      </MainLayout>
-    
+    <MainLayout>
+      <SafeAreaView style={styles.safeArea}>
+        <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
+        <ScrollView contentContainerStyle={styles.container}>
+          {articles.map(themeGroup => (
+            <ArticleCard
+              key={themeGroup.theme}
+              theme={themeGroup.theme}
+              articles={themeGroup.article}
+              onPress={() => handleCardPress(themeGroup)}
+            />
+          ))}
+        </ScrollView>
+        <View style={{height:70}}></View>
+      </SafeAreaView>
+    </MainLayout>
   );
 };
 
