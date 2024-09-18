@@ -6,10 +6,15 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AccLayout, MainLayout} from '../components/layout';
 import PickImage from '../components/ui/PickImage';
+
+const {width, height} = Dimensions.get('window');
+const image_width = width * 0.8;
+const image_height=height* 0.3
 
 const ExplorerScreen = () => {
   const [username, setUsername] = useState('');
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   inputContainer: {
-    width: '100%',
+    width: '90%',
     marginBottom: 20,
   },
   input: {
@@ -111,8 +116,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   photo: {
-    width: 150,
-    height: 150,
+    width: image_width,
+    height: image_height,
     borderRadius: 75,
     marginBottom: 10,
   },
