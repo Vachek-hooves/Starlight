@@ -12,7 +12,12 @@ import {AppProvider} from './store/context';
 import {Screen} from 'react-native-screens';
 import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
 import {View, Text, AppState} from 'react-native';
-import {playBackgroundMusic, setupPlayer, stopBackgroundMusic} from './components/sound/setupPlayer';
+import {
+  playBackgroundMusic,
+  resetPlayer,
+  setupPlayer,
+  stopBackgroundMusic,
+} from './components/sound/setupPlayer';
 import {useEffect} from 'react';
 import VolumeIcon from './components/icon/VolumeIcon';
 
@@ -75,24 +80,7 @@ const TabNavigator = () => {
 
 function App() {
   useEffect(() => {
-    const initializeAudio = async () => {
-      await setupPlayer();
-      await playBackgroundMusic();
-    };
-    initializeAudio();
-
-    const handleAppStateChange = (nextAppState) => {
-      if (nextAppState === 'background' || nextAppState === 'inactive') {
-        stopBackgroundMusic();
-      }
-    };
-
-    const appStateSubscription = AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      appStateSubscription.remove();
-      stopBackgroundMusic();
-    };
+    setupPlayer();
   }, []);
 
   return (

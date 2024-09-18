@@ -6,21 +6,10 @@ export const setupPlayer = async () => {
   if (isSetup) return;
 
   try {
-    await TrackPlayer.setupPlayer({
-      stopWithApp: true, // This ensures the player stops when the app is terminated
-    });
-    
+    await TrackPlayer.setupPlayer();
     await TrackPlayer.updateOptions({
-      capabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.Stop,
-      ],
-      compactCapabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.Stop,
-      ],
+      capabilities: [Capability.Play, Capability.Pause],
+      compactCapabilities: [Capability.Play, Capability.Pause],
     });
 
     await TrackPlayer.add({
@@ -32,18 +21,9 @@ export const setupPlayer = async () => {
 
     isSetup = true;
     console.log('Track player set up successfully');
+    await TrackPlayer.play();
   } catch (error) {
     console.error('Error setting up player:', error);
-  }
-};
-
-export const playBackgroundMusic = async () => {
-  const currentTrack = await TrackPlayer.getCurrentTrack();
-  if (currentTrack !== null) {
-    const playerState = await TrackPlayer.getState();
-    if (playerState !== State.Playing) {
-      await TrackPlayer.play();
-    }
   }
 };
 
@@ -54,8 +34,4 @@ export const toggleBackgroundMusic = async () => {
   } else {
     await TrackPlayer.play();
   }
-};
-
-export const stopBackgroundMusic = async () => {
-  await TrackPlayer.stop();
 };

@@ -1,39 +1,62 @@
-import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
-import TrackPlayer, {usePlaybackState} from 'react-native-track-player';
-import {toggleBackgroundMusic} from '../sound/setupPlayer';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+// import Icon from 'react-native-vector-icons/Ionicons';
+import TrackPlayer from 'react-native-track-player';
 
 const Volume = () => {
-  const playbackState = usePlaybackState();
-  const [isPlaying, setIsPlaying] = useState(false);
-  console.log(isPlaying)
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
-    setIsPlaying(playbackState === TrackPlayer.STATE_PLAYING);
-  }, [playbackState]);
+    setupPlayer();
+    return () => TrackPlayer.destroy();
+  }, []);
 
-  const handleToggleSound = async () => {
-    await toggleBackgroundMusic();
+  const setupPlayer = async () => {
+    try {
+      await TrackPlayer.setupPlayer();
+      await TrackPlayer.add({
+        id: 'backgroundMusic',
+        url: require('../../assets/background_music.mp3'), // Adjust the path as needed
+        title: 'Background Music',
+        artist: 'Your App',
+      });
+      await TrackPlayer.play(); // Start playing immediately
+      setIsPlaying(true);
+    } catch (error) {
+      console.error('Error setting up player:', error);
+    }
+  };
+
+  const toggleSound = async () => {
+    try {
+      if (isPlaying) {
+        await TrackPlayer.pause();
+      } else {
+        await TrackPlayer.play();
+      }
+      setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error('Error toggling sound:', error);
+    }
   };
 
   return (
-    <TouchableOpacity style={styles.button} onPress={handleToggleSound}>
-    {/* //   <Image
-    //     source={
-    //         isPlaying
-    //           ? require('../../assets/icon/volume.png')
-    //           : require('../../assets/icon/volume_down.png')
-    //     //   isPlaying ? <Text>ON</Text> : <Text>OFF</Text>
-    //     }
-    //     style={{width: 40, height: 40}}
-    //   /> */}
+    <TouchableOpacity style={styles.button} onPress={toggleSound}>
+      {/* <Icon
+        name={isPlaying ? 'volume-high' : 'volume-mute'}
+        size={24}
+        color="white"
+      /> */}
+      <Text>ON</Text>
     </TouchableOpacity>
-    
   );
 };
 
 const styles = StyleSheet.create({
   button: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
     padding: 10,
   },
 });
