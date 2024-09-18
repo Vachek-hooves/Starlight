@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AccLayout, MainLayout} from '../components/layout';
+import {AccLayout} from '../components/layout';
 import PickImage from '../components/ui/PickImage';
 import {Color} from '../constants/color';
 
@@ -21,24 +21,11 @@ const ExplorerScreen = () => {
   const [username, setUsername] = useState('');
   const [userPhoto, setUserPhoto] = useState(null);
   const [userExists, setUserExists] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    checkUserExists();
+    loadUserData();
   }, []);
-
-  const checkUserExists = async () => {
-    try {
-      const savedUsername = await AsyncStorage.getItem('username');
-      const savedUserPhoto = await AsyncStorage.getItem('userPhoto');
-      if (savedUsername && savedUserPhoto) {
-        setUsername(savedUsername);
-        setUserPhoto(savedUserPhoto);
-        setUserExists(true);
-      }
-    } catch (error) {
-      console.error('Error checking user data:', error);
-    }
-  };
 
   const loadUserData = async () => {
     try {
@@ -46,6 +33,7 @@ const ExplorerScreen = () => {
       const savedUserPhoto = await AsyncStorage.getItem('userPhoto');
       if (savedUsername) setUsername(savedUsername);
       if (savedUserPhoto) setUserPhoto(savedUserPhoto);
+      setUserExists(savedUsername && savedUserPhoto ? true : false);
     } catch (error) {
       console.error('Error loading user data:', error);
     }
@@ -58,6 +46,7 @@ const ExplorerScreen = () => {
         await AsyncStorage.setItem('userPhoto', userPhoto);
       }
       setUserExists(true);
+      setIsEditing(false);
       alert('User data saved successfully!');
     } catch (error) {
       console.error('Error saving user data:', error);
@@ -74,12 +63,49 @@ const ExplorerScreen = () => {
   const renderUserData = () => (
     <View style={styles.userDataContainer}>
       <Image source={{uri: userPhoto}} style={styles.photo} />
-      <Text style={styles.usernameText}>Welcome, {username}!</Text>
+      {isEditing ? (
+        <TextInput
+          style={styles.editInput}
+          value={username}
+          onChangeText={setUsername}
+          placeholder="Enter your username"
+          placeholderTextColor="#999"
+        />
+      ) : (
+        <Text style={styles.usernameText}>Welcome, {username}!</Text>
+      )}
+      <View style={styles.buttonContainer}>
+        {isEditing ? (
+          <>
+            <TouchableOpacity style={styles.editButton} onPress={saveUserData}>
+              <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => setIsEditing(false)}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => setIsEditing(true)}>
+            <Text style={styles.buttonText}>Edit Profile</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      {isEditing && (
+        <PickImage
+          handleImage={handleImagePick}
+          btnStyle={styles.changePhotoBtn}>
+          <Text style={styles.changePhotoText}>Change Photo</Text>
+        </PickImage>
+      )}
     </View>
   );
 
   const renderLoginForm = () => (
-    <>
+    <View style={styles.userDataContainer}>
       <Text style={styles.title}>Space Explorer Login</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -101,11 +127,11 @@ const ExplorerScreen = () => {
           btnStyle={styles.pickImageBtn}>
           {userPhoto ? 'Change Photo' : 'Add Photo'}
         </PickImage>
+        <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
-    </>
+    </View>
   );
 
   return (
@@ -123,10 +149,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
     padding: 20,
-    // backgroundColor: '#0c1445',
-    // justifyContent:'flex-start'
   },
   title: {
     fontSize: 24,
@@ -145,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     borderWidth: 3,
-    borderColor:Color.tabIconBg
+    borderColor: Color.tabIconBg,
   },
   photoContainer: {
     alignItems: 'center',
@@ -153,8 +176,8 @@ const styles = StyleSheet.create({
   photo: {
     width: image_width,
     height: image_height,
-    borderRadius: 75,
-    marginBottom: 10,
+    borderRadius: 20,
+    marginBottom: 20,
   },
   photoPlaceholder: {
     width: 150,
@@ -164,7 +187,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   pickImageBtn: {
-    // backgroundColor: '#3498db',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -172,7 +194,6 @@ const styles = StyleSheet.create({
     width: 200,
   },
   saveButton: {
-    // backgroundColor: '#2ecc71',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -181,21 +202,65 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
     fontSize: 20,
+    fontWeight: 'bold',
     width: 150,
     textAlign: 'center',
   },
   userDataContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    width: '100%',
+    padding: 20,
   },
   usernameText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#ffffff',
+    marginBottom: 20,
+  },
+  editInput: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 18,
+    color: '#ffffff',
+    width: '100%',
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginBottom: 30,
+  },
+  editButton: {
+    // backgroundColor: 'rgba(52, 152, 219, 0.7)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    backgroundColor: Color.tabIconBg,
+    width: 100,
     marginTop: 20,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  changePhotoBtn: {
+    // backgroundColor: 'rgba(46, 204, 113, 0.7)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 10,
+    backgroundColor: Color.tabIconBg,
+  },
+  changePhotoText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
