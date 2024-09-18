@@ -61,14 +61,14 @@ const TabNavigator = () => {
         component={ArticleScreen}
         options={{tabBarIcon: ({focused}) => <TabArticle focused={focused} />}}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Sound"
         component={Volume}
         options={{
           tabBarIcon: () => <VolumeIcon />,
           tabBarLabel: () => null, // This removes the label below the icon
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

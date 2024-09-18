@@ -16,7 +16,7 @@ const VolumeIcon = () => {
       <Image
         source={
           isPlaying
-            ? require('../../assets/icon/volume.png')
+            ? require('../../assets/icon/star.png')
             : require('../../assets/icon/volume_down.png')
         }
         style={styles.icon}
