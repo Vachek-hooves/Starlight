@@ -21,7 +21,7 @@ const WelcomeScreen = ({navigation}) => {
         duration: 1500,
       }),
     ]).start(() => {
-      setTimeout(() => navigation.navigate('ChooseStarlight'), 1500);
+      setTimeout(() => navigation.navigate('TabNavigator'), 1500);
     });
 
     // Add shooting star every second
