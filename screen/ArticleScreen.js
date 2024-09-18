@@ -12,6 +12,7 @@ import {MainLayout} from '../components/layout';
 import {useAppContext} from '../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import {Color} from '../constants/color';
 
 const ArticleCard = ({theme, articles, onPress}) => (
   <TouchableOpacity onPress={onPress}>
@@ -84,11 +85,12 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardTheme: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 12,
     // color: '#333',
     color: 'black',
+    color: Color.yellow,
   },
   articleItem: {
     marginBottom: 8,
