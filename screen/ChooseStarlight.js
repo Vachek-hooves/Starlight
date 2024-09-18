@@ -89,7 +89,7 @@ const ChooseStarlight = ({navigation}) => {
             marginBottom: 20,
           }}>
           <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
-          <VolumeControl />
+          {/* <VolumeControl /> */}
           <IconReset onPress={handleReset} />
         </View>
         <ScrollView
