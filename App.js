@@ -12,7 +12,7 @@ import {
 import {AppProvider} from './store/context';
 import {Screen} from 'react-native-screens';
 import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
-import {View, Text, AppState} from 'react-native';
+import {View, Text, AppState, TouchableOpacity} from 'react-native';
 import {
   playBackgroundMusic,
   resetPlayer,
@@ -72,7 +72,12 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Sound"
         component={VolumeControl}
-        options={{tabBarIcon: () => <VolumeControl />}}
+        options={{
+          tabBarIcon: () => <VolumeControl />,
+          tabBarButton: props => (
+            <TouchableOpacity {...props} onPress={() => {}} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
