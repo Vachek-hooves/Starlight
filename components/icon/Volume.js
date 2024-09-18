@@ -1,48 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, StyleSheet, Image} from 'react-native';
-import TrackPlayer, {State, usePlaybackState} from 'react-native-track-player';
-import {playBackgroundMusic} from '../sound/setupPlayer';
+import {TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
+import TrackPlayer, {usePlaybackState} from 'react-native-track-player';
+import {toggleBackgroundMusic} from '../sound/setupPlayer';
 
 const Volume = () => {
   const playbackState = usePlaybackState();
   const [isPlaying, setIsPlaying] = useState(false);
-  console.log(isPlaying);
+  console.log(isPlaying)
 
   useEffect(() => {
-    const updatePlayingState = async () => {
-      if (playbackState === State.Playing) {
-        setIsPlaying(true);
-      } else {
-        setIsPlaying(false);
-      }
-    };
-
-    updatePlayingState();
+    setIsPlaying(playbackState === TrackPlayer.STATE_PLAYING);
   }, [playbackState]);
 
-  useEffect(() => {
-    playBackgroundMusic();
-  }, []);
-
-  const toggleSound = async () => {
-    try {
-      if (isPlaying) {
-        await TrackPlayer.pause();
-      } else {
-        await TrackPlayer.play();
-      }
-    } catch (error) {
-      console.error('Error toggling sound:', error);
-    }
+  const handleToggleSound = async () => {
+    await toggleBackgroundMusic();
   };
 
   return (
-    <TouchableOpacity style={styles.button} onPress={toggleSound}>
+    <TouchableOpacity style={styles.button} onPress={handleToggleSound}>
       <Image
         source={
-          isPlaying
-            ? require('../../assets/icon/volume.png')
-            : require('../../assets/icon/volume-down.png')
+            isPlaying
+              ? require('../../assets/icon/volume.png')
+              : require('../../assets/icon/volume_down.png')
+        //   isPlaying ? <Text>ON</Text> : <Text>OFF</Text>
         }
         style={{width: 40, height: 40}}
       />
@@ -52,8 +33,6 @@ const Volume = () => {
 
 const styles = StyleSheet.create({
   button: {
-    top: 10,
-    right: 10,
     padding: 10,
   },
 });

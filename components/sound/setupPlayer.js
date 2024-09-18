@@ -24,15 +24,18 @@ export const setupPlayer = async () => {
       artist: 'Your App',
     });
 
-    console.log('Track player set up successfully');
+    await TrackPlayer.play();
+    console.log('Track player set up and started playing successfully');
   } catch (error) {
     console.error('Error setting up player:', error);
   }
 };
 
-export const playBackgroundMusic = async () => {
-  const currentTrack = await TrackPlayer.getCurrentTrack();
-  if (currentTrack === null) {
+export const toggleBackgroundMusic = async () => {
+  const state = await TrackPlayer.getState();
+  if (state === TrackPlayer.STATE_PLAYING) {
+    await TrackPlayer.pause();
+  } else {
     await TrackPlayer.play();
   }
 };

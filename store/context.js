@@ -15,7 +15,7 @@ export const AppProvider = ({children}) => {
       isLocked:
         theme.theme === 'Planets' ||
         theme.theme === 'Galaxy' ||
-        theme.theme === 'Astronomy',
+        theme.theme === 'constellation',
     })),
   );
 
