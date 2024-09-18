@@ -20,6 +20,7 @@ import {
 } from './components/sound/setupPlayer';
 import {useEffect} from 'react';
 import VolumeIcon from './components/icon/VolumeIcon';
+import VolumeControl from './components/sound/VolumeControl';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -74,6 +75,11 @@ const TabNavigator = () => {
           tabBarLabel: () => null, // This removes the label below the icon
         }}
       /> */}
+      <Tab.Screen
+        name="Sound"
+        component={VolumeControl}
+        options={{tabBarIcon: () => <VolumeControl />, tabBarLabel: () => null}}
+      />
     </Tab.Navigator>
   );
 };
