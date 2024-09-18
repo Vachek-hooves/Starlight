@@ -2,6 +2,7 @@ import React from 'react';
 import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {usePlaybackState, State} from 'react-native-track-player';
 import {toggleBackgroundMusic} from '../sound/setupPlayer';
+import {Color} from '../../constants/color';
 
 const VolumeControl = () => {
   const playbackState = usePlaybackState();
@@ -17,7 +18,7 @@ const VolumeControl = () => {
         source={
           isPlaying
             ? require('../../assets/icon/volume.png')
-            : require('../../assets/icon/volume.png')
+            : require('../../assets/icon/volume_down.png')
         }
         style={styles.icon}
       />
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
   icon: {
     width: 50,
     height: 50,
+    tintColor: Color.tabIconBg,
     // resizeMode: 'contain',
   },
 });
