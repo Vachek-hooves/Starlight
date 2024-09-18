@@ -13,13 +13,13 @@ const ArticleDetailScreen = () => {
     <MainLayout>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.theme}>{themeGroup.theme}</Text>
+          <Text style={styles.theme}>{themeGroup.theme.toUpperCase()}</Text>
           {themeGroup.article.map(article => (
             <View key={article.id} style={styles.articleCard}>
               <Text style={styles.articleTitle}>{article.title}</Text>
               {article.content.map((section, index) => (
                 <View key={index} style={styles.section}>
-                  <Text style={styles.subtitle}>{section.subtitle}</Text>
+                  <Text style={styles.subtitle}>{section.subtitle.toUpperCase()}</Text>
                   <Text style={styles.paragraph}>{section.paragraph}</Text>
                 </View>
               ))}
