@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,7 +12,6 @@ import {MainLayout} from '../components/layout';
 import {useAppContext} from '../store/context';
 import {IconReset} from '../components/icon';
 
-
 const ChooseStarlight = ({navigation}) => {
   const {
     starlightData,
@@ -21,7 +20,6 @@ const ChooseStarlight = ({navigation}) => {
     getUnlockCost,
     resetGame,
   } = useAppContext();
-
 
   function navigateTo(id) {
     console.log(id);
@@ -80,7 +78,17 @@ const ChooseStarlight = ({navigation}) => {
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
+        <View
+          style={{
+            marginTop: 20,
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}>
+          <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
+          <IconReset onPress={handleReset} />
+        </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}>
@@ -109,8 +117,8 @@ const ChooseStarlight = ({navigation}) => {
             );
           })}
         </ScrollView>
-        <IconReset onPress={handleReset} />
       </SafeAreaView>
+      <View style={{height: 120}}></View>
     </MainLayout>
   );
 };

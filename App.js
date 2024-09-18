@@ -2,6 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
+  ArticleDetailScreen,
   ArticleScreen,
   ChooseStarlight,
   ExplorerScreen,
@@ -81,6 +82,10 @@ function App() {
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="ChooseStarlight" component={ChooseStarlight} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
+          <Stack.Screen
+            name="ArticleDetailScreen"
+            component={ArticleDetailScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AppProvider>

@@ -113,7 +113,7 @@ const MainScreen = ({route, navigation}) => {
             text: 'OK',
             onPress: () => {
               console.log('Navigating to ChooseStarlight');
-              navigation.navigate('ChooseStarlight');
+              navigation.navigate('TabNavigator');
             },
           },
         ],

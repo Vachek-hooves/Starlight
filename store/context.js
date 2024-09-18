@@ -1,6 +1,7 @@
 import {useState, useEffect, useContext, createContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Starlight as initialStarlight} from '../data/data';
+import {articleData} from '../data/articleData';
 
 export const AppContext = createContext({});
 
@@ -8,6 +9,7 @@ export const AppProvider = ({children}) => {
   const [starlightData, setStarlightData] = useState(initialStarlight);
   const [totalScore, setTotalScore] = useState(0);
   const [unlockedCount, setUnlockedCount] = useState(1); // Start with 1 as the first constellation is unlocked by default
+  const [articles, setArticles] = useState(articleData);
 
   useEffect(() => {
     initStarlightData();
@@ -116,6 +118,7 @@ export const AppProvider = ({children}) => {
     totalScore,
     getUnlockCost,
     resetGame, // Add this to the context value
+    articles,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
