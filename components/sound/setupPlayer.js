@@ -6,7 +6,9 @@ export const setupPlayer = async () => {
   if (isSetup) return;
 
   try {
-    await TrackPlayer.setupPlayer();
+    await TrackPlayer.setupPlayer({
+      stopWithApp: true, // This ensures the player stops when the app is terminated
+    });
     
     await TrackPlayer.updateOptions({
       capabilities: [
@@ -52,4 +54,8 @@ export const toggleBackgroundMusic = async () => {
   } else {
     await TrackPlayer.play();
   }
+};
+
+export const stopBackgroundMusic = async () => {
+  await TrackPlayer.stop();
 };

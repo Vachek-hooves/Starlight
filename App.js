@@ -11,8 +11,8 @@ import {
 import {AppProvider} from './store/context';
 import {Screen} from 'react-native-screens';
 import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
-import {View, Text} from 'react-native';
-import {playBackgroundMusic, setupPlayer} from './components/sound/setupPlayer';
+import {View, Text, AppState} from 'react-native';
+import {playBackgroundMusic, setupPlayer, stopBackgroundMusic} from './components/sound/setupPlayer';
 import {useEffect} from 'react';
 import VolumeIcon from './components/icon/VolumeIcon';
 
@@ -80,6 +80,19 @@ function App() {
       await playBackgroundMusic();
     };
     initializeAudio();
+
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        stopBackgroundMusic();
+      }
+    };
+
+    const appStateSubscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      appStateSubscription.remove();
+      stopBackgroundMusic();
+    };
   }, []);
 
   return (
