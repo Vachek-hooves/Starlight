@@ -137,9 +137,9 @@ const ExplorerScreen = () => {
 
   return (
     <AccLayout>
-      <Volume />
       <View style={styles.container}>
         {userExists ? renderUserData() : renderLoginForm()}
+        <Volume />
       </View>
     </AccLayout>
   );

@@ -1,22 +1,63 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+// import Icon from 'react-native-vector-icons/Ionicons';
+import TrackPlayer from 'react-native-track-player';
 
-const Volume = ({onPress}) => {
+const Volume = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    setupPlayer();
+    return () => TrackPlayer.destroy();
+  }, []);
+
+  const setupPlayer = async () => {
+    try {
+      await TrackPlayer.setupPlayer();
+      await TrackPlayer.add({
+        id: 'backgroundMusic',
+        url: require('../../assets/sound/sound.mp3'), // Adjust the path as needed
+        title: 'Background Music',
+        artist: 'Your App',
+      });
+    } catch (error) {
+      console.error('Error setting up player:', error);
+    }
+  };
+
+  const toggleSound = async () => {
+    try {
+      if (isPlaying) {
+        await TrackPlayer.pause();
+      } else {
+        await TrackPlayer.play();
+      }
+      setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error('Error toggling sound:', error);
+    }
+  };
+
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Image
-        source={require('../../assets/icon/volume.png')}
-        style={{
-          width: 40,
-          height: 40,
-          alignSelf: 'flex-end',
-          marginHorizontal: 40,
-          marginTop: 30,
-        }}
-      />
+    <TouchableOpacity style={styles.button} onPress={toggleSound}>
+      {/* <Icon
+        name={isPlaying ? 'volume-high' : 'volume-mute'}
+        size={24}
+        color="white"
+      /> */}
+      <Text>ON</Text>
     </TouchableOpacity>
   );
 };
 
+const styles = StyleSheet.create({
+  button: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 10,
+  },
+});
+
 export default Volume;
 
-const styles = StyleSheet.create({});
