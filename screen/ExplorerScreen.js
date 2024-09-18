@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     backgroundColor: Color.tabIconBg,
-    width: 100,
+    width: '35%',
     marginTop: 20,
   },
   buttonText: {
