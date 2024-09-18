@@ -1,29 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {TouchableOpacity, StyleSheet, Text} from 'react-native';
 // import Icon from 'react-native-vector-icons/Ionicons';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, {State} from 'react-native-track-player';
 
 const Volume = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
-    setupPlayer();
-    return () => TrackPlayer.destroy();
-  }, []);
+    let isMounted = true;
 
-  const setupPlayer = async () => {
-    try {
-      await TrackPlayer.setupPlayer();
-      await TrackPlayer.add({
-        id: 'backgroundMusic',
-        url: require('../../assets/sound/sound.mp3'), // Adjust the path as needed
-        title: 'Background Music',
-        artist: 'Your App',
-      });
-    } catch (error) {
-      console.error('Error setting up player:', error);
-    }
-  };
+    const setupAndPlayTrack = async () => {
+      try {
+        const currentTrack = await TrackPlayer.getCurrentTrack();
+        if (currentTrack === null) {
+          // Player is not set up, so we set it up
+          await TrackPlayer.setupPlayer();
+          await TrackPlayer.add({
+            id: 'backgroundMusic',
+            url: require('../../assets/sound/sound.mp3'), // Adjust the path as needed
+            title: 'Background Music',
+            artist: 'Your App',
+          });
+        }
+
+        // Check the current state and play if it's not already playing
+        const playerState = await TrackPlayer.getState();
+        if (playerState !== State.Playing) {
+          await TrackPlayer.play();
+        }
+
+        if (isMounted) {
+          setIsPlaying(true);
+        }
+      } catch (error) {
+        console.error('Error setting up player:', error);
+      }
+    };
+
+    setupAndPlayTrack();
+
+    return () => {
+      isMounted = false;
+      // We don't destroy the player here, as it might be needed in other parts of the app
+    };
+  }, []);
 
   const toggleSound = async () => {
     try {
@@ -45,7 +65,7 @@ const Volume = () => {
         size={24}
         color="white"
       /> */}
-      <Text>ON</Text>
+      <Text>SOUND</Text>
     </TouchableOpacity>
   );
 };
@@ -60,4 +80,3 @@ const styles = StyleSheet.create({
 });
 
 export default Volume;
-
