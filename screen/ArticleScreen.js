@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  SafeAreaView,
 } from 'react-native';
 import {MainLayout} from '../components/layout';
 import {useAppContext} from '../store/context';
@@ -32,18 +33,19 @@ const ArticleScreen = () => {
     //   // source={require('../assets//img/bg/space.jpg')}
     //   style={styles.background}
     //   >
-      <MainLayout>
-        <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
-        <ScrollView contentContainerStyle={styles.container}>
-          {articles.map(themeGroup => (
-            <ArticleCard
-              key={themeGroup.theme}
-              theme={themeGroup.theme}
-              articles={themeGroup.article}
-            />
-          ))}
-        </ScrollView>
-      </MainLayout>
+    <MainLayout>
+      <SafeAreaView></SafeAreaView>
+      <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        {articles.map(themeGroup => (
+          <ArticleCard
+            key={themeGroup.theme}
+            theme={themeGroup.theme}
+            articles={themeGroup.article}
+          />
+        ))}
+      </ScrollView>
+    </MainLayout>
     // </ImageBackground>
   );
 };
@@ -54,7 +56,6 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    
   },
   container: {
     padding: 16,
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFD700',
     textAlign: 'center',
-    marginVertical: 16,
+    marginVertical: 10,
     textShadowColor: 'rgba(255, 215, 0, 0.75)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 10,
