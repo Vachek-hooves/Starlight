@@ -4,7 +4,7 @@ const TabConstell = ({focused}) => {
   return (
     <View
       style={{
-        backgroundColor: focused ? Color.tabBtnBg : 'transparent',
+        backgroundColor: focused ? Color.tabIconBg : 'transparent',
         padding: 7,
         borderRadius: 30,
       }}>

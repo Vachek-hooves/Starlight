@@ -12,6 +12,8 @@ import {AppProvider} from './store/context';
 import {Screen} from 'react-native-screens';
 import {TabArticle, TabConstell, TabUser} from './components/icon';
 import {View, Text} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Color} from './constants/color';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,21 +25,23 @@ const TabNavigator = () => {
         title: '',
         headerShown: false,
         tabBarStyle: {
-          // position: 'absolute',
           backgroundColor: 'transparent',
-          // position: 'absolute',
+          elevation: 0, // for Android
+          shadowOpacity: 0, // for iOS
           borderTopWidth: 0,
+          position: 'absolute',
         },
         tabBarBackground: () => (
           <View
             style={{
-              backgroundColor: 'gray',
-              height: 70,
+              backgroundColor: Color.tabBtnBg,
+              height: 75,
               justifyContent: 'center',
-              bottom: 16,
+              bottom: 20,
               marginHorizontal: 10,
               borderRadius: 16,
-            }}></View>
+            }}
+          />
         ),
       }}>
       <Tab.Screen
@@ -58,6 +62,11 @@ const TabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+// Wrap your screen components with this
+const ScreenWrapper = ({children}) => (
+  <SafeAreaView style={{flex: 1, paddingBottom: 70}}>{children}</SafeAreaView>
+);
 
 function App() {
   return (
