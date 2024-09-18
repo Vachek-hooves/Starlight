@@ -89,9 +89,9 @@ const ExplorerScreen = () => {
           </>
         ) : (
           <TouchableOpacity
-            style={styles.editButton}
+            style={styles.editProfileBtn}
             onPress={() => setIsEditing(true)}>
-            <Text style={styles.buttonText}>Edit Profile</Text>
+            <Text style={styles.editProfileText}>Edit Profile</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -264,5 +264,21 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  editProfileText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  editProfileBtn: {
+    marginTop: 150,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    backgroundColor: Color.tabIconBg,
+    width: '35%',
+    // marginTop: 20,
   },
 });
