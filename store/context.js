@@ -9,7 +9,10 @@ export const AppProvider = ({children}) => {
   const [starlightData, setStarlightData] = useState(initialStarlight);
   const [totalScore, setTotalScore] = useState(0);
   const [unlockedCount, setUnlockedCount] = useState(1); // Start with 1 as the first constellation is unlocked by default
-  const [articles, setArticles] = useState(articleData);
+  const [articles, setArticles] = useState(articleData.map(theme => ({
+    ...theme,
+    isLocked: theme.theme === 'Planets' || theme.theme === 'Galaxy'
+  })));
 
   useEffect(() => {
     initStarlightData();
@@ -111,6 +114,45 @@ export const AppProvider = ({children}) => {
     }
   };
 
+  const unlockTheme = async (themeName) => {
+    if (totalScore >= 50) {
+      try {
+        const updatedArticles = articles.map(theme =>
+          theme.theme === themeName ? {...theme, isLocked: false} : theme
+        );
+        setArticles(updatedArticles);
+        
+        const newTotalScore = totalScore - 50;
+        setTotalScore(newTotalScore);
+        await AsyncStorage.setItem('totalScore', newTotalScore.toString());
+        
+        // Save the updated articles state to AsyncStorage
+        await AsyncStorage.setItem('articles', JSON.stringify(updatedArticles));
+        
+        return true; // Successfully unlocked
+      } catch (error) {
+        console.error('Error unlocking theme:', error);
+        return false;
+      }
+    }
+    return false; // Not enough score to unlock
+  };
+
+  // Add this to load saved articles state on app start
+  useEffect(() => {
+    const loadArticles = async () => {
+      try {
+        const savedArticles = await AsyncStorage.getItem('articles');
+        if (savedArticles) {
+          setArticles(JSON.parse(savedArticles));
+        }
+      } catch (error) {
+        console.error('Error loading articles:', error);
+      }
+    };
+    loadArticles();
+  }, []);
+
   const value = {
     starlightData,
     updateScore,
@@ -119,6 +161,7 @@ export const AppProvider = ({children}) => {
     getUnlockCost,
     resetGame, // Add this to the context value
     articles,
+    unlockTheme,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
