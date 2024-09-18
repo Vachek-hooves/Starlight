@@ -1,8 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, TabActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
-  ArticleDetailScreen,
   ArticleScreen,
   ChooseStarlight,
   ExplorerScreen,
@@ -10,10 +9,11 @@ import {
   WelcomeScreen,
 } from './screen';
 import {AppProvider} from './store/context';
-import {TabArticle, TabConstell, TabUser} from './components/icon';
-import {View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Color} from './constants/color';
+import {Screen} from 'react-native-screens';
+import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
+import {View, Text} from 'react-native';
+import {setupPlayer} from './components/sound/setupPlayer';
+import {useEffect} from 'react';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,14 +30,15 @@ const TabNavigator = () => {
           shadowOpacity: 0, // for iOS
           borderTopWidth: 0,
           position: 'absolute',
+          height: 70,
         },
         tabBarBackground: () => (
           <View
             style={{
-              backgroundColor: Color.tabBtnBg,
-              height: 75,
+              backgroundColor: 'gray',
+              height: 70,
               justifyContent: 'center',
-              bottom: 20,
+              bottom: 16,
               marginHorizontal: 10,
               borderRadius: 16,
             }}
@@ -59,16 +60,20 @@ const TabNavigator = () => {
         component={ArticleScreen}
         options={{tabBarIcon: ({focused}) => <TabArticle focused={focused} />}}
       />
+      <Tab.Screen
+        name="Sound"
+        component={Volume}
+        options={{tabBarIcon: () => <Volume />, tabBarLabel: () => null}}
+      />
     </Tab.Navigator>
   );
 };
 
-// Wrap your screen components with this
-const ScreenWrapper = ({children}) => (
-  <SafeAreaView style={{flex: 1, paddingBottom: 70}}>{children}</SafeAreaView>
-);
-
 function App() {
+  useEffect(() => {
+    setupPlayer();
+  }, []);
+
   return (
     <AppProvider>
       <NavigationContainer>
@@ -82,10 +87,6 @@ function App() {
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="ChooseStarlight" component={ChooseStarlight} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
-          <Stack.Screen
-            name="ArticleDetailScreen"
-            component={ArticleDetailScreen}
-          />
         </Stack.Navigator>
       </NavigationContainer>
     </AppProvider>
