@@ -3,9 +3,12 @@ import TrackPlayer, { Capability, State } from 'react-native-track-player';
 let isSetup = false;
 
 export const setupPlayer = async () => {
-  if (isSetup) return;
-
   try {
+    // Stop and reset the player if it's already set up
+    if (isSetup) {
+      await TrackPlayer.reset();
+    }
+
     await TrackPlayer.setupPlayer();
     await TrackPlayer.updateOptions({
       capabilities: [Capability.Play, Capability.Pause],
