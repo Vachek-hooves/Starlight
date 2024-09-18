@@ -20,10 +20,25 @@ const image_height = height * 0.3;
 const ExplorerScreen = () => {
   const [username, setUsername] = useState('');
   const [userPhoto, setUserPhoto] = useState(null);
+  const [userExists, setUserExists] = useState(false);
 
   useEffect(() => {
-    loadUserData();
+    checkUserExists();
   }, []);
+
+  const checkUserExists = async () => {
+    try {
+      const savedUsername = await AsyncStorage.getItem('username');
+      const savedUserPhoto = await AsyncStorage.getItem('userPhoto');
+      if (savedUsername && savedUserPhoto) {
+        setUsername(savedUsername);
+        setUserPhoto(savedUserPhoto);
+        setUserExists(true);
+      }
+    } catch (error) {
+      console.error('Error checking user data:', error);
+    }
+  };
 
   const loadUserData = async () => {
     try {
@@ -42,6 +57,7 @@ const ExplorerScreen = () => {
       if (userPhoto) {
         await AsyncStorage.setItem('userPhoto', userPhoto);
       }
+      setUserExists(true);
       alert('User data saved successfully!');
     } catch (error) {
       console.error('Error saving user data:', error);
@@ -55,34 +71,47 @@ const ExplorerScreen = () => {
     }
   };
 
+  const renderUserData = () => (
+    <View style={styles.userDataContainer}>
+      <Image source={{uri: userPhoto}} style={styles.photo} />
+      <Text style={styles.usernameText}>Welcome, {username}!</Text>
+    </View>
+  );
+
+  const renderLoginForm = () => (
+    <>
+      <Text style={styles.title}>Space Explorer Login</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your username"
+          value={username}
+          onChangeText={setUsername}
+        />
+      </View>
+      <View style={styles.photoContainer}>
+        {userPhoto ? (
+          <Image source={{uri: userPhoto}} style={styles.photo} />
+        ) : (
+          <View style={styles.photoPlaceholder} />
+        )}
+        <PickImage
+          style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}
+          handleImage={handleImagePick}
+          btnStyle={styles.pickImageBtn}>
+          {userPhoto ? 'Change Photo' : 'Add Photo'}
+        </PickImage>
+      </View>
+      <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
+        <Text style={styles.saveButtonText}>Save</Text>
+      </TouchableOpacity>
+    </>
+  );
+
   return (
     <AccLayout>
       <View style={styles.container}>
-        <Text style={styles.title}>Space Explorer Login</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your username"
-            value={username}
-            onChangeText={setUsername}
-          />
-        </View>
-        <View style={styles.photoContainer}>
-          {userPhoto ? (
-            <Image source={{uri: userPhoto}} style={styles.photo} />
-          ) : (
-            <View style={styles.photoPlaceholder} />
-          )}
-          <PickImage
-            style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}
-            handleImage={handleImagePick}
-            btnStyle={styles.pickImageBtn}>
-            {userPhoto ? 'Change Photo' : 'Add Photo'}
-          </PickImage>
-          <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
-            <Text style={styles.saveButtonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
+        {userExists ? renderUserData() : renderLoginForm()}
       </View>
     </AccLayout>
   );
@@ -97,6 +126,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     padding: 20,
     // backgroundColor: '#0c1445',
+    // justifyContent:'flex-start'
   },
   title: {
     fontSize: 24,
@@ -156,5 +186,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: 150,
     textAlign: 'center',
+  },
+  userDataContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  usernameText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginTop: 20,
   },
 });
