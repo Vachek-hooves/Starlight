@@ -19,7 +19,9 @@ const ArticleDetailScreen = () => {
               <Text style={styles.articleTitle}>{article.title}</Text>
               {article.content.map((section, index) => (
                 <View key={index} style={styles.section}>
-                  <Text style={styles.subtitle}>{section.subtitle.toUpperCase()}</Text>
+                  <Text style={styles.subtitle}>
+                    {section.subtitle.toUpperCase()}
+                  </Text>
                   <Text style={styles.paragraph}>{section.paragraph}</Text>
                 </View>
               ))}
@@ -27,7 +29,7 @@ const ArticleDetailScreen = () => {
           ))}
         </ScrollView>
       </SafeAreaView>
-      <View style={{marginTop: 30}}>
+      <View style={{marginVertical:50}}>
         <IconReturn />
       </View>
     </MainLayout>

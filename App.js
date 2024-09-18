@@ -2,6 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, TabActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
+  ArticleDetailScreen,
   ArticleScreen,
   ChooseStarlight,
   ExplorerScreen,
@@ -37,7 +38,7 @@ const TabNavigator = () => {
           shadowOpacity: 0, // for iOS
           borderTopWidth: 0,
           position: 'absolute',
-          height: 70,
+          height: 80,
         },
         tabBarBackground: () => (
           <View
@@ -67,18 +68,11 @@ const TabNavigator = () => {
         component={ArticleScreen}
         options={{tabBarIcon: ({focused}) => <TabArticle focused={focused} />}}
       />
-      {/* <Tab.Screen
-        name="Sound"
-        component={Volume}
-        options={{
-          tabBarIcon: () => <VolumeIcon />,
-          tabBarLabel: () => null, // This removes the label below the icon
-        }}
-      /> */}
+
       <Tab.Screen
         name="Sound"
         component={VolumeControl}
-        options={{tabBarIcon: () => <VolumeControl />, tabBarLabel: () => null}}
+        options={{tabBarIcon: () => <VolumeControl />}}
       />
     </Tab.Navigator>
   );
@@ -102,6 +96,10 @@ function App() {
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="ChooseStarlight" component={ChooseStarlight} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
+          <Stack.Screen
+            name="ArticleDetailScreen"
+            component={ArticleDetailScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AppProvider>

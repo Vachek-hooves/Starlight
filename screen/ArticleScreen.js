@@ -18,12 +18,13 @@ const ArticleCard = ({theme, articles, onPress, isLocked}) => (
   <TouchableOpacity onPress={onPress}>
     <LinearGradient
       colors={[
-        'rgba(255,255,255,0.7)',
-        'rgba(255,255,255,0.5)',
-        'rgba(255,255,255,0.5)',
-        'rgba(255,255,255,0.3)',
-        'rgba(255,255,255,0.2)',
-        'rgba(255,255,255,0.01)',
+        'rgba(25,25,25,0.9)',
+        'rgba(25,25,25,0.8)',
+        'rgba(25,25,25,0.7)',
+        'rgba(25,25,25,0.65)',
+        'rgba(25,25,25,0.5)',
+        'rgba(25,25,25,0.3)',
+        'rgba(25,25,25,0.1)',
       ]}
       style={styles.card}>
       <Text style={styles.cardTheme}>{theme.toUpperCase()}</Text>
@@ -72,7 +73,7 @@ const ArticleScreen = () => {
             />
           ))}
         </ScrollView>
-        <View style={{height:70}}></View>
+        <View style={{height: 70}}></View>
       </SafeAreaView>
     </MainLayout>
   );
@@ -109,6 +110,7 @@ const styles = StyleSheet.create({
   articleTitle: {
     fontSize: 16,
     // color: '#666',
+    color: 'white',
   },
   background: {
     flex: 1,
