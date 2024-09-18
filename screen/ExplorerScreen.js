@@ -1,11 +1,47 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AccLayout, MainLayout} from '../components/layout';
 import PickImage from '../components/ui/PickImage';
 
 const ExplorerScreen = () => {
   const [username, setUsername] = useState('');
   const [userPhoto, setUserPhoto] = useState(null);
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  const loadUserData = async () => {
+    try {
+      const savedUsername = await AsyncStorage.getItem('username');
+      const savedUserPhoto = await AsyncStorage.getItem('userPhoto');
+      if (savedUsername) setUsername(savedUsername);
+      if (savedUserPhoto) setUserPhoto(savedUserPhoto);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  };
+
+  const saveUserData = async () => {
+    try {
+      await AsyncStorage.setItem('username', username);
+      if (userPhoto) {
+        await AsyncStorage.setItem('userPhoto', userPhoto);
+      }
+      alert('User data saved successfully!');
+    } catch (error) {
+      console.error('Error saving user data:', error);
+      alert('Failed to save user data. Please try again.');
+    }
+  };
 
   const handleImagePick = images => {
     if (images && images.length > 0) {
@@ -37,6 +73,9 @@ const ExplorerScreen = () => {
             {userPhoto ? 'Change Photo' : 'Add Photo'}
           </PickImage>
         </View>
+        <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
       </View>
     </AccLayout>
   );
@@ -89,5 +128,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
+  },
+  saveButton: {
+    backgroundColor: '#2ecc71',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  saveButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
