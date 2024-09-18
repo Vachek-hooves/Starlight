@@ -14,6 +14,7 @@ import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
 import {View, Text} from 'react-native';
 import {setupPlayer} from './components/sound/setupPlayer';
 import {useEffect} from 'react';
+import VolumeIcon from './components/icon/VolumeIcon';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,7 +65,7 @@ const TabNavigator = () => {
         name="Sound"
         component={Volume}
         options={{
-          tabBarIcon: () => <Volume />,
+          tabBarIcon: () => <VolumeIcon />,
           tabBarLabel: () => null, // This removes the label below the icon
         }}
       />

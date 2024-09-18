@@ -17,17 +17,18 @@ const Volume = () => {
   };
 
   return (
-    <TouchableOpacity style={styles.button} onPress={handleToggleSound}>
-      <Image
-        source={
-            isPlaying
-              ? require('../../assets/icon/volume.png')
-              : require('../../assets/icon/volume_down.png')
-        //   isPlaying ? <Text>ON</Text> : <Text>OFF</Text>
-        }
-        style={{width: 40, height: 40}}
-      />
-    </TouchableOpacity>
+    // <TouchableOpacity style={styles.button} onPress={handleToggleSound}>
+    //   <Image
+    //     source={
+    //         isPlaying
+    //           ? require('../../assets/icon/volume.png')
+    //           : require('../../assets/icon/volume_down.png')
+    //     //   isPlaying ? <Text>ON</Text> : <Text>OFF</Text>
+    //     }
+    //     style={{width: 40, height: 40}}
+    //   />
+    // </TouchableOpacity>
+    <></>
   );
 };
 
