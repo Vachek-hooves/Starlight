@@ -5,10 +5,11 @@ const IconReset = ({onPress}) => {
     <TouchableOpacity
       onPress={onPress}
       style={{
+        // bottom: 40,
+        // marginTop: 60,
+        // marginLeft: 30,
+        // top: 20,
 
-        bottom: 40,
-        marginTop: 80,
-        marginLeft: 30,
       }}>
       <Image
         source={require('../../assets/icon/reset.png')}

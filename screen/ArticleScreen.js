@@ -41,13 +41,11 @@ const ArticleScreen = () => {
   const navigation = useNavigation();
 
   const handleCardPress = themeGroup => {
-    navigation.navigate('ArticleDetail', {themeGroup});
+    navigation.navigate('ArticleDetailScreen', {themeGroup});
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/img/bg/space.jpg')}
-      style={styles.background}>
+   
       <MainLayout>
         <SafeAreaView style={styles.safeArea}>
           <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
@@ -63,7 +61,7 @@ const ArticleScreen = () => {
           </ScrollView>
         </SafeAreaView>
       </MainLayout>
-    </ImageBackground>
+    
   );
 };
 
