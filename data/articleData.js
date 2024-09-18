@@ -76,7 +76,7 @@ export const articleData = [
   },
 
   {
-    theme: "Сузір'я",
+    theme: "constellation",
     article: [
       {
         id: 1,
@@ -157,7 +157,7 @@ export const articleData = [
     ],
   },
   {
-    theme: 'Планети',
+    theme: 'Planets',
     article: [
       {
         id: 1,
@@ -268,7 +268,7 @@ export const articleData = [
     ],
   },
   {
-    theme: 'Галактики',
+    theme: 'Galaxy',
     article: [
       {
         id: 1,
