@@ -22,12 +22,9 @@ const PickImage = ({handleImage, style, children, btnStyle}) => {
 
   return (
     <TouchableOpacity style={[btnStyle]} onPress={() => library()}>
-      <Text style={[style, {textAlign: 'center', color: 'black'}]}>
-        {children}
-      </Text>
+      <Text style={[style, {textAlign: 'center'}]}>{children}</Text>
     </TouchableOpacity>
   );
 };
 
 export default PickImage;
-

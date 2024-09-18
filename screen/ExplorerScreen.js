@@ -11,10 +11,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AccLayout, MainLayout} from '../components/layout';
 import PickImage from '../components/ui/PickImage';
+import {Color} from '../constants/color';
 
 const {width, height} = Dimensions.get('window');
 const image_width = width * 0.8;
-const image_height=height* 0.3
+const image_height = height * 0.3;
 
 const ExplorerScreen = () => {
   const [username, setUsername] = useState('');
@@ -73,14 +74,15 @@ const ExplorerScreen = () => {
             <View style={styles.photoPlaceholder} />
           )}
           <PickImage
+            style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}
             handleImage={handleImagePick}
             btnStyle={styles.pickImageBtn}>
             {userPhoto ? 'Change Photo' : 'Add Photo'}
           </PickImage>
+          <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.saveButton} onPress={saveUserData}>
-          <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
       </View>
     </AccLayout>
   );
@@ -110,7 +112,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 8,
     padding: 10,
-    fontSize: 16,
+    fontSize: 24,
+    fontWeight: 'bold',
+    borderWidth: 3,
+    borderColor:Color.tabIconBg
   },
   photoContainer: {
     alignItems: 'center',
@@ -129,21 +134,27 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   pickImageBtn: {
-    backgroundColor: '#3498db',
+    // backgroundColor: '#3498db',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
+    backgroundColor: Color.tabIconBg,
+    width: 200,
   },
   saveButton: {
-    backgroundColor: '#2ecc71',
+    // backgroundColor: '#2ecc71',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 20,
+    backgroundColor: Color.tabIconBg,
   },
   saveButtonText: {
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontSize: 20,
+    width: 150,
+    textAlign: 'center',
   },
 });
