@@ -14,34 +14,48 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import {Color} from '../constants/color';
 
-const ArticleCard = ({theme, articles, onPress}) => (
+const ArticleCard = ({theme, articles, onPress, isLocked}) => (
   <TouchableOpacity onPress={onPress}>
     <LinearGradient
       colors={[
-        'rgba(255,255,255,0.7)',
-        'rgba(255,255,255,0.5)',
-        'rgba(255,255,255,0.5)',
-        'rgba(255,255,255,0.3)',
-        'rgba(255,255,255,0.2)',
-        'rgba(255,255,255,0.01)',
+        'rgba(25,25,25,0.9)',
+        'rgba(25,25,25,0.8)',
+        'rgba(25,25,25,0.7)',
+        'rgba(25,25,25,0.65)',
+        'rgba(25,25,25,0.5)',
+        'rgba(25,25,25,0.3)',
+        'rgba(25,25,25,0.1)',
       ]}
       style={styles.card}>
       <Text style={styles.cardTheme}>{theme.toUpperCase()}</Text>
-      {articles.map(article => (
-        <View key={article.id} style={styles.articleItem}>
-          <Text style={styles.articleTitle}>{article.title}</Text>
-        </View>
-      ))}
+      {isLocked ? (
+        <Text style={styles.lockedText}>Locked (50 score to unlock)</Text>
+      ) : (
+        articles.map(article => (
+          <View key={article.id} style={styles.articleItem}>
+            <Text style={styles.articleTitle}>{article.title}</Text>
+          </View>
+        ))
+      )}
     </LinearGradient>
   </TouchableOpacity>
 );
 
 const ArticleScreen = () => {
-  const {articles, totalScore} = useAppContext();
+  const {articles, totalScore, unlockTheme} = useAppContext();
   const navigation = useNavigation();
 
   const handleCardPress = themeGroup => {
-    navigation.navigate('ArticleDetailScreen', {themeGroup});
+    if (themeGroup.isLocked) {
+      if (totalScore >= 50) {
+        unlockTheme(themeGroup.theme);
+      } else {
+        // Show an alert or message that the user doesn't have enough score
+        alert("You don't have enough score to unlock this theme.");
+      }
+    } else {
+      navigation.navigate('ArticleDetailScreen', {themeGroup});
+    }
   };
 
   return (
@@ -54,11 +68,12 @@ const ArticleScreen = () => {
               key={themeGroup.theme}
               theme={themeGroup.theme}
               articles={themeGroup.article}
+              isLocked={themeGroup.isLocked}
               onPress={() => handleCardPress(themeGroup)}
             />
           ))}
         </ScrollView>
-        <View style={{height:70}}></View>
+        <View style={{height: 70}}></View>
       </SafeAreaView>
     </MainLayout>
   );
@@ -95,6 +110,7 @@ const styles = StyleSheet.create({
   articleTitle: {
     fontSize: 16,
     // color: '#666',
+    color: 'white',
   },
   background: {
     flex: 1,
@@ -112,5 +128,10 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 5,
+  },
+  lockedText: {
+    fontSize: 16,
+    color: Color.yellow,
+    fontStyle: 'italic',
   },
 });

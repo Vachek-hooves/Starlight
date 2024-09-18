@@ -11,6 +11,8 @@ import {
 import {MainLayout} from '../components/layout';
 import {useAppContext} from '../store/context';
 import {IconReset} from '../components/icon';
+import VolumeIcon from '../components/icon/VolumeIcon';
+import VolumeControl from '../components/sound/VolumeControl';
 
 const ChooseStarlight = ({navigation}) => {
   const {
@@ -87,6 +89,7 @@ const ChooseStarlight = ({navigation}) => {
             marginBottom: 20,
           }}>
           <Text style={styles.totalScore}>Total Score: {totalScore}</Text>
+          {/* <VolumeControl /> */}
           <IconReset onPress={handleReset} />
         </View>
         <ScrollView

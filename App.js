@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, TabActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   ArticleDetailScreen,
@@ -10,10 +10,18 @@ import {
   WelcomeScreen,
 } from './screen';
 import {AppProvider} from './store/context';
-import {TabArticle, TabConstell, TabUser} from './components/icon';
-import {View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Color} from './constants/color';
+import {Screen} from 'react-native-screens';
+import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
+import {View, Text, AppState} from 'react-native';
+import {
+  playBackgroundMusic,
+  resetPlayer,
+  setupPlayer,
+  stopBackgroundMusic,
+} from './components/sound/setupPlayer';
+import {useEffect} from 'react';
+import VolumeIcon from './components/icon/VolumeIcon';
+import VolumeControl from './components/sound/VolumeControl';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,14 +38,15 @@ const TabNavigator = () => {
           shadowOpacity: 0, // for iOS
           borderTopWidth: 0,
           position: 'absolute',
+          height: 80,
         },
         tabBarBackground: () => (
           <View
             style={{
-              backgroundColor: Color.tabBtnBg,
-              height: 75,
+              backgroundColor: 'gray',
+              height: 70,
               justifyContent: 'center',
-              bottom: 20,
+              bottom: 16,
               marginHorizontal: 10,
               borderRadius: 16,
             }}
@@ -59,16 +68,21 @@ const TabNavigator = () => {
         component={ArticleScreen}
         options={{tabBarIcon: ({focused}) => <TabArticle focused={focused} />}}
       />
+
+      <Tab.Screen
+        name="Sound"
+        component={VolumeControl}
+        options={{tabBarIcon: () => <VolumeControl />}}
+      />
     </Tab.Navigator>
   );
 };
 
-// Wrap your screen components with this
-const ScreenWrapper = ({children}) => (
-  <SafeAreaView style={{flex: 1, paddingBottom: 70}}>{children}</SafeAreaView>
-);
-
 function App() {
+  useEffect(() => {
+    setupPlayer();
+  }, []);
+
   return (
     <AppProvider>
       <NavigationContainer>

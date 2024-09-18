@@ -9,7 +9,15 @@ export const AppProvider = ({children}) => {
   const [starlightData, setStarlightData] = useState(initialStarlight);
   const [totalScore, setTotalScore] = useState(0);
   const [unlockedCount, setUnlockedCount] = useState(1); // Start with 1 as the first constellation is unlocked by default
-  const [articles, setArticles] = useState(articleData);
+  const [articles, setArticles] = useState(
+    articleData.map(theme => ({
+      ...theme,
+      isLocked:
+        theme.theme === 'Planets' ||
+        theme.theme === 'Galaxy' ||
+        theme.theme === 'constellation',
+    })),
+  );
 
   useEffect(() => {
     initStarlightData();
@@ -23,7 +31,10 @@ export const AppProvider = ({children}) => {
       if (storedData) {
         setStarlightData(JSON.parse(storedData));
       } else {
-        await AsyncStorage.setItem('starlightData', JSON.stringify(initialStarlight));
+        await AsyncStorage.setItem(
+          'starlightData',
+          JSON.stringify(initialStarlight),
+        );
       }
       if (storedTotalScore) {
         setTotalScore(parseInt(storedTotalScore));
@@ -49,8 +60,11 @@ export const AppProvider = ({children}) => {
       );
       setStarlightData(updatedData);
       await AsyncStorage.setItem('starlightData', JSON.stringify(updatedData));
-      
-      const newTotalScore = updatedData.reduce((sum, constellation) => sum + parseInt(constellation.score), 0);
+
+      const newTotalScore = updatedData.reduce(
+        (sum, constellation) => sum + parseInt(constellation.score),
+        0,
+      );
       setTotalScore(newTotalScore);
       await AsyncStorage.setItem('totalScore', newTotalScore.toString());
     } catch (error) {
@@ -62,7 +76,7 @@ export const AppProvider = ({children}) => {
     return 60 + (unlockedCount - 1) * 50;
   };
 
-  const unlockConstellation = async (id) => {
+  const unlockConstellation = async id => {
     const unlockCost = getUnlockCost();
     if (totalScore < unlockCost) {
       return false; // Not enough score to unlock
@@ -71,11 +85,11 @@ export const AppProvider = ({children}) => {
       const updatedData = starlightData.map(constellation =>
         constellation.id === id
           ? {...constellation, isActive: true}
-          : constellation
+          : constellation,
       );
       setStarlightData(updatedData);
       await AsyncStorage.setItem('starlightData', JSON.stringify(updatedData));
-      
+
       const newTotalScore = totalScore - unlockCost;
       setTotalScore(newTotalScore);
       await AsyncStorage.setItem('totalScore', newTotalScore.toString());
@@ -95,7 +109,10 @@ export const AppProvider = ({children}) => {
     try {
       // Reset starlightData to initial state
       setStarlightData(initialStarlight);
-      await AsyncStorage.setItem('starlightData', JSON.stringify(initialStarlight));
+      await AsyncStorage.setItem(
+        'starlightData',
+        JSON.stringify(initialStarlight),
+      );
 
       // Reset totalScore to 0
       setTotalScore(0);
@@ -111,6 +128,45 @@ export const AppProvider = ({children}) => {
     }
   };
 
+  const unlockTheme = async themeName => {
+    if (totalScore >= 50) {
+      try {
+        const updatedArticles = articles.map(theme =>
+          theme.theme === themeName ? {...theme, isLocked: false} : theme,
+        );
+        setArticles(updatedArticles);
+
+        const newTotalScore = totalScore - 50;
+        setTotalScore(newTotalScore);
+        await AsyncStorage.setItem('totalScore', newTotalScore.toString());
+
+        // Save the updated articles state to AsyncStorage
+        await AsyncStorage.setItem('articles', JSON.stringify(updatedArticles));
+
+        return true; // Successfully unlocked
+      } catch (error) {
+        console.error('Error unlocking theme:', error);
+        return false;
+      }
+    }
+    return false; // Not enough score to unlock
+  };
+
+  // Add this to load saved articles state on app start
+  useEffect(() => {
+    const loadArticles = async () => {
+      try {
+        const savedArticles = await AsyncStorage.getItem('articles');
+        if (savedArticles) {
+          setArticles(JSON.parse(savedArticles));
+        }
+      } catch (error) {
+        console.error('Error loading articles:', error);
+      }
+    };
+    loadArticles();
+  }, []);
+
   const value = {
     starlightData,
     updateScore,
@@ -119,6 +175,7 @@ export const AppProvider = ({children}) => {
     getUnlockCost,
     resetGame, // Add this to the context value
     articles,
+    unlockTheme,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
