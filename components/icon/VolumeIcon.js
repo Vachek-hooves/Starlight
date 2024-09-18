@@ -1,10 +1,11 @@
-import {TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {usePlaybackState} from 'react-native-track-player';
-import {toggleBackgroundMusic} from '../sound/setupPlayer';
+import React from 'react';
+import { TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { usePlaybackState, State } from 'react-native-track-player';
+import { toggleBackgroundMusic } from '../sound/setupPlayer';
 
 const VolumeIcon = () => {
   const playbackState = usePlaybackState();
-  const isPlaying = playbackState === 3; // 3 is the value for STATE_PLAYING
+  const isPlaying = playbackState === State.Playing;
 
   const handleToggleSound = async () => {
     await toggleBackgroundMusic();
@@ -24,15 +25,15 @@ const VolumeIcon = () => {
   );
 };
 
-export default VolumeIcon;
-
 const styles = StyleSheet.create({
-    button: {
-      padding: 5,
-    },
-    icon: {
-      width: 24,
-      height: 24,
-      resizeMode: 'contain',
-    },
-  });
+  button: {
+    padding: 5,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
+});
+
+export default VolumeIcon;

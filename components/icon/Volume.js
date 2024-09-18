@@ -17,8 +17,8 @@ const Volume = () => {
   };
 
   return (
-    // <TouchableOpacity style={styles.button} onPress={handleToggleSound}>
-    //   <Image
+    <TouchableOpacity style={styles.button} onPress={handleToggleSound}>
+    {/* //   <Image
     //     source={
     //         isPlaying
     //           ? require('../../assets/icon/volume.png')
@@ -26,9 +26,9 @@ const Volume = () => {
     //     //   isPlaying ? <Text>ON</Text> : <Text>OFF</Text>
     //     }
     //     style={{width: 40, height: 40}}
-    //   />
-    // </TouchableOpacity>
-    <></>
+    //   /> */}
+    </TouchableOpacity>
+    
   );
 };
 

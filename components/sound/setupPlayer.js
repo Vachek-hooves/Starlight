@@ -1,6 +1,10 @@
-import TrackPlayer, { Capability } from 'react-native-track-player';
+import TrackPlayer, { Capability, State } from 'react-native-track-player';
+
+let isSetup = false;
 
 export const setupPlayer = async () => {
+  if (isSetup) return;
+
   try {
     await TrackPlayer.setupPlayer();
     
@@ -24,16 +28,26 @@ export const setupPlayer = async () => {
       artist: 'Your App',
     });
 
-    await TrackPlayer.play();
-    console.log('Track player set up and started playing successfully');
+    isSetup = true;
+    console.log('Track player set up successfully');
   } catch (error) {
     console.error('Error setting up player:', error);
   }
 };
 
+export const playBackgroundMusic = async () => {
+  const currentTrack = await TrackPlayer.getCurrentTrack();
+  if (currentTrack !== null) {
+    const playerState = await TrackPlayer.getState();
+    if (playerState !== State.Playing) {
+      await TrackPlayer.play();
+    }
+  }
+};
+
 export const toggleBackgroundMusic = async () => {
   const state = await TrackPlayer.getState();
-  if (state === TrackPlayer.STATE_PLAYING) {
+  if (state === State.Playing) {
     await TrackPlayer.pause();
   } else {
     await TrackPlayer.play();
