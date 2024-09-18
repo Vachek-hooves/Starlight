@@ -1,33 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, StyleSheet, Text, Image} from 'react-native';
-// import Icon from 'react-native-vector-icons/Ionicons';
-import TrackPlayer, {State} from 'react-native-track-player';
+import {TouchableOpacity, StyleSheet, Image} from 'react-native';
+import TrackPlayer, {State, usePlaybackState} from 'react-native-track-player';
+import {playBackgroundMusic} from '../sound/setupPlayer';
 
 const Volume = () => {
+  const playbackState = usePlaybackState();
   const [isPlaying, setIsPlaying] = useState(false);
+  console.log(isPlaying);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const startPlayback = async () => {
-      try {
-        const state = await TrackPlayer.getState();
-        if (state !== State.Playing) {
-          await TrackPlayer.play();
-        }
-        if (isMounted) {
-          setIsPlaying(true);
-        }
-      } catch (error) {
-        console.error('Error starting playback:', error);
+    const updatePlayingState = async () => {
+      if (playbackState === State.Playing) {
+        setIsPlaying(true);
+      } else {
+        setIsPlaying(false);
       }
     };
 
-    startPlayback();
+    updatePlayingState();
+  }, [playbackState]);
 
-    return () => {
-      isMounted = false;
-    };
+  useEffect(() => {
+    playBackgroundMusic();
   }, []);
 
   const toggleSound = async () => {
@@ -37,7 +31,6 @@ const Volume = () => {
       } else {
         await TrackPlayer.play();
       }
-      setIsPlaying(!isPlaying);
     } catch (error) {
       console.error('Error toggling sound:', error);
     }
@@ -45,13 +38,12 @@ const Volume = () => {
 
   return (
     <TouchableOpacity style={styles.button} onPress={toggleSound}>
-      {/* <Icon
-        name={isPlaying ? 'volume-high' : 'volume-mute'}
-        size={24}
-        color="white"
-      /> */}
       <Image
-        source={require('../../assets/icon/volume.png')}
+        source={
+          isPlaying
+            ? require('../../assets/icon/volume.png')
+            : require('../../assets/icon/volume-down.png')
+        }
         style={{width: 40, height: 40}}
       />
     </TouchableOpacity>
@@ -60,7 +52,6 @@ const Volume = () => {
 
 const styles = StyleSheet.create({
   button: {
-    // position: 'absolute',
     top: 10,
     right: 10,
     padding: 10,

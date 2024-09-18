@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {MainLayout} from '../components/layout';
 import {useAppContext} from '../store/context';
-import {IconReset, Volume} from '../components/icon';
+import {IconReset} from '../components/icon';
 
 const ChooseStarlight = ({navigation}) => {
   const {

@@ -63,7 +63,10 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Sound"
         component={Volume}
-        options={{tabBarIcon: () => <Volume />, tabBarLabel: () => null}}
+        options={{
+          tabBarIcon: () => <Volume />,
+          tabBarLabel: () => null, // This removes the label below the icon
+        }}
       />
     </Tab.Navigator>
   );
