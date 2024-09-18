@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer, TabActions} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   ArticleScreen,
@@ -9,9 +9,8 @@ import {
   WelcomeScreen,
 } from './screen';
 import {AppProvider} from './store/context';
-import {Screen} from 'react-native-screens';
 import {TabArticle, TabConstell, TabUser} from './components/icon';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Color} from './constants/color';
 

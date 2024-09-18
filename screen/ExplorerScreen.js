@@ -1,12 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {MainLayout} from '../components/layout';
 
 const ExplorerScreen = () => {
-  return (
-    <View>
-      <Text>ExplorerScreen</Text>
-    </View>
-  );
+  return <MainLayout></MainLayout>;
 };
 
 export default ExplorerScreen;
