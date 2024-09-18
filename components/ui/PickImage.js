@@ -31,4 +31,3 @@ const PickImage = ({handleImage, style, children, btnStyle}) => {
 
 export default PickImage;
 
-const styles = StyleSheet.create({});
