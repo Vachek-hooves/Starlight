@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AccLayout} from '../components/layout';
 import PickImage from '../components/ui/PickImage';
 import {Color} from '../constants/color';
+import {Volume} from '../components/icon';
 
 const {width, height} = Dimensions.get('window');
 const image_width = width * 0.8;
@@ -136,6 +137,7 @@ const ExplorerScreen = () => {
 
   return (
     <AccLayout>
+      <Volume />
       <View style={styles.container}>
         {userExists ? renderUserData() : renderLoginForm()}
       </View>
