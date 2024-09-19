@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer, TabActions} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   ArticleDetailScreen,
@@ -10,24 +10,35 @@ import {
   WelcomeScreen,
 } from './screen';
 import {AppProvider} from './store/context';
-import {Screen} from 'react-native-screens';
-import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
-import {View, Text, AppState, TouchableOpacity, Dimensions} from 'react-native';
+
+import {TabArticle, TabConstell, TabUser} from './components/icon';
 import {
-  playBackgroundMusic,
-  resetPlayer,
-  setupPlayer,
-  stopBackgroundMusic,
-} from './components/sound/setupPlayer';
+  View,
+  AppState,
+  TouchableOpacity,
+  Dimensions,
+  Platform,
+} from 'react-native';
+import {resetPlayer, setupPlayer} from './components/sound/setupPlayer';
 import {useEffect} from 'react';
-import VolumeIcon from './components/icon/VolumeIcon';
+
 import VolumeControl from './components/sound/VolumeControl';
+
+function getDeviceInfo() {
+  const {width, height, scale} = Dimensions.get('window');
+  const deviceType =
+    Platform.OS === 'ios' ? 'iOS Simulator' : 'Android Emulator';
+  const deviceModel = Platform.OS === 'ios' ? 'iPhone' : 'Android Device';
+
+  console.log(`Running on ${deviceType}`);
+  console.log(`Device: ${deviceModel}`);
+  console.log(`Screen: ${width}x${height} @${scale}x`);
+}
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const {height} = Dimensions.get('window');
-console.log(height);
 const SEphone = 670;
 
 const TabNavigator = () => {
@@ -90,6 +101,7 @@ const TabNavigator = () => {
 function App() {
   useEffect(() => {
     setupPlayer();
+    // getDeviceInfo();
 
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'background' || nextAppState === 'inactive') {
