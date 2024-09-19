@@ -12,7 +12,7 @@ import {
 import {AppProvider} from './store/context';
 import {Screen} from 'react-native-screens';
 import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
-import {View, Text, AppState, TouchableOpacity} from 'react-native';
+import {View, Text, AppState, TouchableOpacity, Dimensions} from 'react-native';
 import {
   playBackgroundMusic,
   resetPlayer,
@@ -25,6 +25,10 @@ import VolumeControl from './components/sound/VolumeControl';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const {height} = Dimensions.get('window');
+console.log(height);
+const SEphone = 670;
 
 const TabNavigator = () => {
   return (
@@ -46,7 +50,7 @@ const TabNavigator = () => {
               backgroundColor: 'gray',
               height: 70,
               justifyContent: 'center',
-              bottom: 16,
+              bottom: height > SEphone ? 16 : 5,
               marginHorizontal: 10,
               borderRadius: 16,
             }}
@@ -86,6 +90,19 @@ const TabNavigator = () => {
 function App() {
   useEffect(() => {
     setupPlayer();
+
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        resetPlayer();
+      } else if (nextAppState === 'active') {
+        setupPlayer();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+      resetPlayer();
+    };
   }, []);
 
   return (
