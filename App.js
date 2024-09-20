@@ -24,16 +24,16 @@ import {useEffect} from 'react';
 
 import VolumeControl from './components/sound/VolumeControl';
 
-function getDeviceInfo() {
-  const {width, height, scale} = Dimensions.get('window');
-  const deviceType =
-    Platform.OS === 'ios' ? 'iOS Simulator' : 'Android Emulator';
-  const deviceModel = Platform.OS === 'ios' ? 'iPhone' : 'Android Device';
+// function getDeviceInfo() {
+//   const {width, height, scale} = Dimensions.get('window');
+//   const deviceType =
+//     Platform.OS === 'ios' ? 'iOS Simulator' : 'Android Emulator';
+//   const deviceModel = Platform.OS === 'ios' ? 'iPhone' : 'Android Device';
 
-  console.log(`Running on ${deviceType}`);
-  console.log(`Device: ${deviceModel}`);
-  console.log(`Screen: ${width}x${height} @${scale}x`);
-}
+//   console.log(`Running on ${deviceType}`);
+//   console.log(`Device: ${deviceModel}`);
+//   console.log(`Screen: ${width}x${height} @${scale}x`);
+// }
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

@@ -24,7 +24,6 @@ const ChooseStarlight = ({navigation}) => {
   } = useAppContext();
 
   function navigateTo(id) {
-    console.log(id);
     navigation.navigate('MainScreen', {constellationId: id});
   }
 
