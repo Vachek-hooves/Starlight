@@ -148,13 +148,15 @@ const MainScreen = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/img/bg/skybg.jpg')}
+        // source={require('../assets/img/bg/skybg.jpg')}
+        source={require('../assets/newbg/bg.png')}
         style={styles.background}>
         <Text style={styles.title}>
           Constellation Game: {constellation?.name}
         </Text>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View
+          <ImageBackground
+          source={require('../assets/img/bg/space.jpg')}
             style={[
               styles.gameArea,
               {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
@@ -197,7 +199,7 @@ const MainScreen = ({route, navigation}) => {
                 onPress={() => handleStarPress(star)}
               />
             ))}
-          </View>
+          </ImageBackground>
           <Text style={styles.score}>Score: {score}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={checkWin}>
