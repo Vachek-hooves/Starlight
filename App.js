@@ -18,9 +18,10 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Animated,
 } from 'react-native';
 import {resetPlayer, setupPlayer} from './components/sound/setupPlayer';
-import {useEffect} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 import VolumeControl from './components/sound/VolumeControl';
 
@@ -40,6 +41,11 @@ const Tab = createBottomTabNavigator();
 
 const {height} = Dimensions.get('window');
 const SEphone = 670;
+
+const loader = [
+  require('./assets/loaders/Loader1.png'),
+  require('./assets/loaders/Loader2.png'),
+];
 
 const TabNavigator = () => {
   return (
@@ -99,6 +105,8 @@ const TabNavigator = () => {
 };
 
 function App() {
+  const [id, setItem] = useState(0);
+  const animation = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     setupPlayer();
     // getDeviceInfo();
@@ -117,6 +125,36 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    fadeStart();
+    const timeOut = setTimeout(() => {
+      navigateToMenu();
+    }, 6000);
+    return () => clearTimeout(timeOut);
+  }, []);
+
+  const fadeStart = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start(() => fadeFinish());
+  };
+
+  const fadeFinish = () => {
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start(() => {
+      setItem(prevState => prevState + 1);
+      fadeStart();
+    });
+  };
+  const navigateToMenu = () => {
+    setItem(2);
+  };
+
   return (
     <AppProvider>
       <NavigationContainer>
@@ -126,8 +164,24 @@ function App() {
             animation: 'fade_from_bottom',
             animationDuration: 1800,
           }}>
-          <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          {id < 2 ? (
+            <Stack.Screen name="Welcome" options={{headerShown: false}}>
+              {() => (
+                <View style={{flex: 1}}>
+                  <Animated.Image
+                    source={loader[id]}
+                    style={[
+                      {width: '100%', flex: 1},
+                      {opacity: animation},
+                    ]}></Animated.Image>
+                </View>
+              )}
+            </Stack.Screen>
+          ) : (
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          )}
+          {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
+          {/* <Stack.Screen name="TabNavigator" component={TabNavigator} /> */}
           <Stack.Screen name="ChooseStarlight" component={ChooseStarlight} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
           <Stack.Screen
