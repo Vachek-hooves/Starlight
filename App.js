@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer, TabActions} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   ArticleDetailScreen,
@@ -10,21 +10,42 @@ import {
   WelcomeScreen,
 } from './screen';
 import {AppProvider} from './store/context';
-import {Screen} from 'react-native-screens';
-import {TabArticle, TabConstell, TabUser, Volume} from './components/icon';
-import {View, Text, AppState} from 'react-native';
+
+import {TabArticle, TabConstell, TabUser} from './components/icon';
 import {
-  playBackgroundMusic,
-  resetPlayer,
-  setupPlayer,
-  stopBackgroundMusic,
-} from './components/sound/setupPlayer';
-import {useEffect} from 'react';
-import VolumeIcon from './components/icon/VolumeIcon';
+  View,
+  AppState,
+  TouchableOpacity,
+  Dimensions,
+  Platform,
+  Animated,
+} from 'react-native';
+import {resetPlayer, setupPlayer} from './components/sound/setupPlayer';
+import {useEffect, useRef, useState} from 'react';
+
 import VolumeControl from './components/sound/VolumeControl';
+
+// function getDeviceInfo() {
+//   const {width, height, scale} = Dimensions.get('window');
+//   const deviceType =
+//     Platform.OS === 'ios' ? 'iOS Simulator' : 'Android Emulator';
+//   const deviceModel = Platform.OS === 'ios' ? 'iPhone' : 'Android Device';
+
+//   console.log(`Running on ${deviceType}`);
+//   console.log(`Device: ${deviceModel}`);
+//   console.log(`Screen: ${width}x${height} @${scale}x`);
+// }
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const {height} = Dimensions.get('window');
+const SEphone = 670;
+
+const loader = [
+  require('./assets/loaders/Loader1.png'),
+  require('./assets/loaders/Loader2.png'),
+];
 
 const TabNavigator = () => {
   return (
@@ -46,7 +67,7 @@ const TabNavigator = () => {
               backgroundColor: 'gray',
               height: 70,
               justifyContent: 'center',
-              bottom: 16,
+              bottom: height > SEphone ? 16 : 5,
               marginHorizontal: 10,
               borderRadius: 16,
             }}
@@ -72,16 +93,67 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Sound"
         component={VolumeControl}
-        options={{tabBarIcon: () => <VolumeControl />}}
+        options={{
+          tabBarIcon: () => <VolumeControl />,
+          tabBarButton: props => (
+            <TouchableOpacity {...props} onPress={() => {}} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
 };
 
 function App() {
+  const [id, setItem] = useState(0);
+  const animation = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     setupPlayer();
+    // getDeviceInfo();
+
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        resetPlayer();
+      } else if (nextAppState === 'active') {
+        setupPlayer();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+      resetPlayer();
+    };
   }, []);
+
+  useEffect(() => {
+    fadeStart();
+    const timeOut = setTimeout(() => {
+      navigateToMenu();
+    }, 6000);
+    return () => clearTimeout(timeOut);
+  }, []);
+
+  const fadeStart = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start(() => fadeFinish());
+  };
+
+  const fadeFinish = () => {
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start(() => {
+      setItem(prevState => prevState + 1);
+      fadeStart();
+    });
+  };
+  const navigateToMenu = () => {
+    setItem(2);
+  };
 
   return (
     <AppProvider>
@@ -92,8 +164,24 @@ function App() {
             animation: 'fade_from_bottom',
             animationDuration: 1800,
           }}>
-          <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          {id < 2 ? (
+            <Stack.Screen name="Welcome" options={{headerShown: false}}>
+              {() => (
+                <View style={{flex: 1}}>
+                  <Animated.Image
+                    source={loader[id]}
+                    style={[
+                      {width: '100%', flex: 1},
+                      {opacity: animation},
+                    ]}></Animated.Image>
+                </View>
+              )}
+            </Stack.Screen>
+          ) : (
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          )}
+          {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} /> */}
+          {/* <Stack.Screen name="TabNavigator" component={TabNavigator} /> */}
           <Stack.Screen name="ChooseStarlight" component={ChooseStarlight} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
           <Stack.Screen

@@ -12,7 +12,6 @@ const VolumeControl = () => {
   const handleToggleSound = async () => {
     await toggleBackgroundMusic();
     setOffState(prev => !prev);
-    console.log(offState);
   };
 
   return (

@@ -19,6 +19,7 @@ const {width, height} = Dimensions.get('window');
 const GAME_AREA_WIDTH = width * 0.9;
 const GAME_AREA_HEIGHT = height * 0.6;
 const STAR_SIZE = 22;
+const GAP = width * 0.3;
 
 const MainScreen = ({route, navigation}) => {
   const {constellationId} = route.params;
@@ -147,13 +148,15 @@ const MainScreen = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/img/bg/skybg.jpg')}
+        // source={require('../assets/img/bg/skybg.jpg')}
+        source={require('../assets/newbg/bg.png')}
         style={styles.background}>
         <Text style={styles.title}>
           Constellation Game: {constellation?.name}
         </Text>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View
+          <ImageBackground
+          source={require('../assets/img/bg/space.jpg')}
             style={[
               styles.gameArea,
               {width: GAME_AREA_WIDTH, height: GAME_AREA_HEIGHT},
@@ -196,7 +199,7 @@ const MainScreen = ({route, navigation}) => {
                 onPress={() => handleStarPress(star)}
               />
             ))}
-          </View>
+          </ImageBackground>
           <Text style={styles.score}>Score: {score}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={checkWin}>
@@ -208,6 +211,7 @@ const MainScreen = ({route, navigation}) => {
               <Text style={styles.buttonText}>Reset</Text>
             </TouchableOpacity>
           </View>
+          {/* <View style={{height: 10}}></View> */}
         </ScrollView>
         <View style={styles.navigationButtons}>
           <TouchableOpacity
@@ -293,12 +297,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   line: {
-    height: 3,
-    backgroundColor: 'rgba(255, 215, 0, 0.6)',
+    height: 4,
+    backgroundColor: 'rgba(255, 215, 0, 0.7)',
     position: 'absolute',
     transformOrigin: 'left',
     shadowColor: '#ffd700',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.8,
     shadowRadius: 4,
     elevation: 5,
@@ -346,13 +350,17 @@ const styles = StyleSheet.create({
   },
   navigationButtons: {
     flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
+    // position: 'absolute',
     bottom: 40,
     left: 20,
     right: 20,
-    marginHorizontal: 40,
+    // marginHorizontal: 60,
+    marginTop: 60,
+    // width:'80%'
+    gap: GAP,
+    marginLeft:30
   },
   instructionsButton: {
     width: 40,
@@ -390,7 +398,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     textAlign: 'center',
-    lineHeight:22
+    lineHeight: 22,
   },
   closeButton: {
     backgroundColor: 'rgba(255, 0, 0, 0.6)',
@@ -401,7 +409,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: '#ffffff',
     fontWeight: 'bold',
-    fontSize:18
+    fontSize: 18,
   },
 });
 
